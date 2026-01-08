@@ -162,5 +162,66 @@ ALTER TABLE `temporada`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
   
   
+
+
+CREATE TABLE `club` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `dirección` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `teléfono` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `fecha_alta` datetime NOT NULL,
+  `id_presidente` bigint NOT NULL,
+  `id_vicepresidente` bigint NOT NULL,
+  `imagen` longblob NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+
+
+CREATE TABLE `articulo` (
+  `id` bigint NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `descuento` decimal(10,2) DEFAULT NULL,
+  `imagen` longblob,
+  `id_tipoarticulo` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ALTER TABLE `articulo`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `articulo`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+  
+  CREATE TABLE `carrito` (
+  `id` bigint NOT NULL,
+  `cantidad` int NOT NULL,
+  `id_articulo` bigint NOT NULL,
+  `id_usuario` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+
+
+ALTER TABLE `carrito`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `carrito`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+  
+  CREATE TABLE `Comentarios` (
+  `id` bigint NOT NULL,
+  `contenido` text NOT NULL,
+  `id_articulo` bigint NOT NULL,
+  `id_usuario` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ALTER TABLE `Comentarios`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `Comentarios`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+
+
+
+
 COMMIT;
 
