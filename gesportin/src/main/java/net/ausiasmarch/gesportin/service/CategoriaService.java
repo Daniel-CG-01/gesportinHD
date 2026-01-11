@@ -14,10 +14,16 @@ import net.ausiasmarch.gesportin.repository.CategoriaRepository;
 public class CategoriaService {
     
     @Autowired
+    AleatorioService aleatorioService;
+
+    @Autowired
     CategoriaRepository categoriaRepository;
 
     @Autowired
     SessionService sessionService;
+
+    // Lista de Categorias
+    private static final String[] CATEGORIAS = {"Querubín", "Pre-benjamín", "Benjamín", "Alevín", "Infantil", "Cadete", "Juvenil", "Amateur"};
 
     // ----------------------------CRUD---------------------------------
     public CategoriaEntity get(Long id){
@@ -70,6 +76,20 @@ public class CategoriaService {
 
         categoriaRepository.deleteById(id);
         return id;
+    }
+
+    public Long fill(Long numCategorias) {
+        if (!sessionService.isSessionActive()) {
+            throw new UnauthorizedException("No active session");
+        }
+
+        for (long j = 0; j < numCategorias; j++) {
+            CategoriaEntity categoriaEntity = new CategoriaEntity();
+            categoriaEntity.setNombre(CATEGORIAS[aleatorioService.GenerarNumeroAleatorioEnteroEnRango(0, CATEGORIAS.length - 1)]);
+            categoriaRepository.save(categoriaEntity);
+        }
+
+        return count();
     }
 
     public Long empty() {

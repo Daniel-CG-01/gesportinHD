@@ -30,7 +30,7 @@ public class CategoriaAPI {
     // ---------------------------Rellenar datos fake ---------------------------
 
     // @GetMapping("/rellena")
-    // public ResponseEntity<Long> rellenaCategorias() {
+    // public ResponseEntity<Long> () {
     //     return ResponseEntity.ok(categoriaService.rellenaCategorias());
     // }
 
@@ -43,7 +43,7 @@ public class CategoriaAPI {
     }
 
     // Obtener un listado paginado de todas las categorías (getAll)
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<Page<CategoriaEntity>> getPage(Pageable pageable) {
         return ResponseEntity.ok(categoriaService.getPage(pageable));
     }
@@ -64,6 +64,12 @@ public class CategoriaAPI {
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return ResponseEntity.ok(categoriaService.delete(id));
+    }
+
+    // Rellena
+    @GetMapping("/fill/{numCategorias}")
+    public ResponseEntity<Long> fill(@PathVariable Long numCategorias) {
+        return ResponseEntity.ok(categoriaService.fill(numCategorias));
     }
 
     // Vaciar la tabla Categoría
