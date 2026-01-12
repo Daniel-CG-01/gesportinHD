@@ -11,7 +11,6 @@ import net.ausiasmarch.gesportin.entity.ArticuloEntity;
 import net.ausiasmarch.gesportin.entity.CompraEntity;
 import net.ausiasmarch.gesportin.entity.FacturaEntity;
 import net.ausiasmarch.gesportin.exception.ResourceNotFoundException;
-import net.ausiasmarch.gesportin.exception.UnauthorizedException;
 import net.ausiasmarch.gesportin.repository.ArticuloRepository;
 import net.ausiasmarch.gesportin.repository.CompraRepository;
 import net.ausiasmarch.gesportin.repository.FacturaRepository;
@@ -35,10 +34,6 @@ public class CompraService {
     SessionService oSessionService;
 
     public Long fill(Long cantidad) {
-
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
 
         for (long j = 0; j < cantidad; j++) {
             // crea entity compra y la rellena con datos aleatorios
@@ -73,17 +68,11 @@ public class CompraService {
     }
 
     public Long create(CompraEntity compraEntity) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         oCompraRepository.save(compraEntity);
         return compraEntity.getId();
     }
 
     public Long update(CompraEntity compraEntity) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         CompraEntity existingCompra = oCompraRepository.findById(compraEntity.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Compra not found"));
         existingCompra.setCantidad(compraEntity.getCantidad());
@@ -95,9 +84,6 @@ public class CompraService {
     }
 
     public Long delete(Long id) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         oCompraRepository.deleteById(id);
         return id;
     }
@@ -112,9 +98,6 @@ public class CompraService {
 
     // vaciar tabla compra (solo administrador más adelante)
     public Long empty() {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         Long total = oCompraRepository.count();
         oCompraRepository.deleteAll();
         return total;
