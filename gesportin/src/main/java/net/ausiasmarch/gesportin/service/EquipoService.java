@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import net.ausiasmarch.gesportin.entity.EquipoEntity;
 import net.ausiasmarch.gesportin.exception.ResourceNotFoundException;
-import net.ausiasmarch.gesportin.exception.UnauthorizedException;
 import net.ausiasmarch.gesportin.repository.EquipoRepository;
 
 @Service
@@ -16,30 +15,22 @@ public class EquipoService {
     EquipoRepository equipoRepository;
 
     @Autowired
-    SessionService sessionService;
-
-    @Autowired
     AleatorioService aleatorioService;
 
     public EquipoEntity get(Long id) {
-        if (!sessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         return equipoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Equipo not found"));
     }
 
+    public Page<EquipoEntity> getPage(Pageable pageable) {
+        return equipoRepository.findAll(pageable);
+    }
+
     public Long create(EquipoEntity equipoEntity) {
-        if (!sessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         equipoEntity.setId(null);
         return equipoRepository.save(equipoEntity).getId();
     }
 
     public Long update(EquipoEntity equipoEntity) {
-        if (!sessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         EquipoEntity oEquipoEntity = equipoRepository.findById(equipoEntity.getId()).orElseThrow(() -> new ResourceNotFoundException("Equipo not found"));
         oEquipoEntity.setNombre(equipoEntity.getNombre());
         oEquipoEntity.setId_club(equipoEntity.getId_club());
@@ -51,9 +42,6 @@ public class EquipoService {
     }
 
     public Long delete(Long id) {
-        if (!sessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         if (!equipoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Equipo not found");
         }
@@ -66,18 +54,12 @@ public class EquipoService {
     }
 
     public Long empty() {
-        if (!sessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         Long i = equipoRepository.count();
         equipoRepository.deleteAll();
         return i;
     }
 
     public Long fill(Long cantidad) {
-        if (!sessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         for (int i = 0; i < cantidad; i++) {
             EquipoEntity equipoEntity = new EquipoEntity();
             equipoEntity.setNombre("Equipo " + i);

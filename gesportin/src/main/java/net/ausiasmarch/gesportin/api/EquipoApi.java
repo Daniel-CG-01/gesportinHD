@@ -25,9 +25,15 @@ public class EquipoApi {
     @Autowired
     EquipoService equipoService;
 
+    // Obtener uno por ID
     @GetMapping("/{id}")
     public ResponseEntity<EquipoEntity> get(@PathVariable Long id) {
         return ResponseEntity.ok(equipoService.get(id));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Page<EquipoEntity>> getPage(Pageable pageable) {
+        return ResponseEntity.ok(equipoService.getPage(pageable));
     }
 
     @GetMapping("/count")
