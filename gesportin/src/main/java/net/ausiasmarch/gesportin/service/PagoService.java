@@ -28,17 +28,11 @@ public class PagoService {
     }
 
     public Long create(PagoEntity pagoEntity) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No hay sesion activa");
-        }
         oPagoRepository.save(pagoEntity);
         return pagoEntity.getId();
     }
 
     public Long update(PagoEntity pagoEntity) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No hay sesión activa");
-        }
         PagoEntity existingPago = oPagoRepository.findById(pagoEntity.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Pago no encontrado"));
         existingPago.setId_cuota(pagoEntity.getId_cuota());
@@ -49,9 +43,6 @@ public class PagoService {
     }
 
     public Long delete(Long id) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         oPagoRepository.deleteById(id);
         return id;
     }
@@ -67,9 +58,6 @@ public class PagoService {
 
     // vaciar tabla pago
     public Long empty() {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No active session");
-        }
         Long total = oPagoRepository.count();
         oPagoRepository.deleteAll();
         return total;
@@ -77,9 +65,6 @@ public class PagoService {
 
     // llenar tabla pago con datos de prueba
     public Long fill(Long cantidad) {
-        if (!oSessionService.isSessionActive()) {
-            throw new UnauthorizedException("No hay sesión activa");
-        }
         for (int i = 0; i < cantidad; i++) {
             PagoEntity pago = new PagoEntity();
             pago.setId_cuota((Long) (long) oAleatorioService.GenerarNumeroAleatorioEnteroEnRango(1, 50));
