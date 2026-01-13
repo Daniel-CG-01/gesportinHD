@@ -30,7 +30,7 @@ public class CuotaService {
     public Long update(CuotaEntity cuotaEntity) {
         CuotaEntity existingBlog = oCuotaRepository.findById(cuotaEntity.getId())
                 .orElseThrow(() -> new RuntimeException("Recurso not found"));
-        existingBlog.setNombre(cuotaEntity.getNombre());
+        existingBlog.setDescripcion(cuotaEntity.getDescripcion());
         oCuotaRepository.save(existingBlog);
         return existingBlog.getId();
     }
@@ -60,7 +60,7 @@ public class CuotaService {
         Long created = 0L;
         for (int i = 0; i < cantidad; i++) {
             CuotaEntity c = new CuotaEntity();
-            c.setNombre(nombres[rnd.nextInt(nombres.length)] + " " + (rnd.nextInt(9000) + 1000));
+            c.setDescripcion(nombres[rnd.nextInt(nombres.length)] + " " + (rnd.nextInt(9000) + 1000));
             c.setCantidad((float) (rnd.nextDouble() * 100.0 + 1.0));
             c.setFecha(LocalDateTime.now().minusDays(rnd.nextInt(365)));
             c.setId_temporada((Long) (long) (rnd.nextInt(5) + 1));

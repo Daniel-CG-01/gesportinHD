@@ -30,7 +30,7 @@ public class CuotaEntity {
     private Long id;
     @NotNull
     @Size(max=255)
-    private String nombre;
+    private String descripcion;
     @NotNull
     @Size(max=255)
     private float cantidad;

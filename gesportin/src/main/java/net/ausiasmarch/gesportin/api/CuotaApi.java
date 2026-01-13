@@ -62,6 +62,11 @@ public class CuotaApi {
         
     }
 
+    @DeleteMapping("/empty")
+    public ResponseEntity<Long> empty() {
+        return ResponseEntity.ok(oCuotaService.empty());
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(oCuotaService.count()); 
