@@ -37,15 +37,13 @@ public class LigaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Liga no encontrado con id: " + id));
     }
 
-    // public Page<LigaEntity> getPage(Pageable pageable, String nombre, Long idEquipo) {
-    //     if (nombre != null && !nombre.isEmpty()) {
-    //         return oLigaRepository.findByNombreContainingIgnoreCase(nombre, pageable);
-    //     } else if (idEquipo != null) {
-    //         return oLigaRepository.findByIdEquipo(idEquipo, pageable);
-    //     } else {
-    //         return oLigaRepository.findAll(pageable);
-    //     }
-    // }
+    public Page<LigaEntity> getPage(Pageable pageable, String nombre) {
+        if (nombre != null && !nombre.isEmpty()) {
+            return oLigaRepository.findByNombreContainingIgnoreCase(nombre, pageable);
+        } else {
+            return oLigaRepository.findAll(pageable);
+        }
+    }
 
     public LigaEntity create(LigaEntity liga) {
         liga.setId(null);
