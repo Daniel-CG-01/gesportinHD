@@ -16,12 +16,13 @@ import net.ausiasmarch.gesportin.repository.CuotaRepository;
 
 @Service
 public class CuotaService {
-    
+
     @Autowired
     private CuotaRepository oCuotaRepository;
 
     public CuotaEntity get(Long id) {
-        return oCuotaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cuota no encontrado con id: " + id));
+        return oCuotaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cuota no encontrado con id: " + id));
     }
 
     public Page<CuotaEntity> getPage(Pageable pageable) {
@@ -40,7 +41,7 @@ public class CuotaService {
         existingCuota.setDescripcion(cuota.getDescripcion());
         existingCuota.setCantidad(cuota.getCantidad());
         existingCuota.setFecha(cuota.getFecha());
-        existingCuota.setEquipo(cuota.getEquipo().getId());
+        // existingCuota.setIdEquipo(cuota.getIdEquipo());
         return oCuotaRepository.save(existingCuota);
     }
 
@@ -62,18 +63,22 @@ public class CuotaService {
     }
 
     public Long fill(Long cantidad) {
+
         Random random = new Random();
-        String[] nombres = {"Matrícula", "Mensualidad", "Cuota Extra", "Inscripción", "Cuota Anual"};
+
+        String[] nombres = { "Matrícula", "Mensualidad", "Cuota Extra", "Inscripción", "Cuota Anual" };
+
         for (int i = 0; i < cantidad; i++) {
             CuotaEntity cuota = new CuotaEntity();
             cuota.setDescripcion(nombres[random.nextInt(nombres.length)] + " " + (random.nextInt(9000) + 1000));
             cuota.setCantidad(BigDecimal.valueOf(random.nextDouble() * 100.0 + 1.0));
             cuota.setFecha(LocalDateTime.now().minusDays(random.nextInt(365)));
-            EquipoEntity equipo = new EquipoEntity();
-            equipo.setId(Long.valueOf(random.nextInt(50) + 1));
-            cuota.setEquipo(equipo);
+            // cuota.setEquipo((Equipo) (random.nextInt(5) + 1));
             oCuotaRepository.save(cuota);
+
         }
+
         return cantidad;
+
     }
 }
