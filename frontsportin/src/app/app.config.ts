@@ -9,9 +9,9 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-     provideHttpClient(), // <-- Agregado para usar HttpClient en los servicios para acceder a APIs REST
+    provideHttpClient(), // <-- Agregado para usar HttpClient en los servicios para acceder a APIs REST
     provideHttpClient(
       withInterceptorsFromDi()
-    )
+    )    
   ]
 };
