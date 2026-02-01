@@ -48,13 +48,42 @@
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th scope="col" style="cursor: pointer; width: 5%">
-            <span class="header-inline">ID</span>
+          <th scope="col" style="cursor: pointer; width: 5%" (click)="onOrder('id')">
+            <span class="header-inline"
+              >ID
+              @if (orderField() === 'id') {
+                @if (orderDirection() === 'asc') {
+                  <i class="bi bi-caret-up-fill" aria-hidden="true"></i>
+                } @else {
+                  <i class="bi bi-caret-down-fill" aria-hidden="true"></i>
+                }
+              }
+            </span>
           </th>
-          <th scope="col" style="cursor: pointer">
-            <span class="header-inline">Descripción</span>
+          <th scope="col" style="cursor: pointer" (click)="onOrder('descripcion')">
+            <span class="header-inline"
+              >Descripción
+              @if (orderField() === 'descripcion') {
+                @if (orderDirection() === 'asc') {
+                  <i class="bi bi-caret-up-fill" aria-hidden="true"></i>
+                } @else {
+                  <i class="bi bi-caret-down-fill" aria-hidden="true"></i>
+                }
+              }
+            </span>
           </th>
-          <th scope="col">Club</th>
+          <th scope="col" style="cursor: pointer" (click)="onOrder('club')">
+            <span class="header-inline"
+              >Club
+              @if (orderField() === 'club') {
+                @if (orderDirection() === 'asc') {
+                  <i class="bi bi-caret-up-fill" aria-hidden="true"></i>
+                } @else {
+                  <i class="bi bi-caret-down-fill" aria-hidden="true"></i>
+                }
+              }
+            </span>
+          </th>
           <th scope="col">Artículos</th>
           <th scope="col">
             <span class="header-inline">Acciones </span>
@@ -62,27 +91,28 @@
         </tr>
       </thead>
       <tbody>
-        @for (tipoarticulo of oPage()?.content; track tipoarticulo.id) {
+        @for (oTipoarticulo of oPage()?.content; track oTipoarticulo.id) {
           <tr>
-            <th scope="row">{{ tipoarticulo.id }}</th>
-            <td>{{ tipoarticulo.descripcion }}</td>
+            <th scope="row" style="text-align: center">{{ oTipoarticulo.id }}</th>
+            <td>{{ oTipoarticulo.descripcion }}</td>
             <td>
-
-              {{ tipoarticulo.club.nombre | trim: 20 }} ({{ tipoarticulo.club.id }})
+              <a [routerLink]="['/club', '/view', oTipoarticulo.club.id]">
+                {{ oTipoarticulo.club.nombre | trim: 20 }} ({{ oTipoarticulo.club.id }})
+              </a>
               <a
                 class="btn btn-warning btn-sm ms-2 float-end"
-                [routerLink]="['/tipoarticulo', tipoarticulo.club.id]"
+                [routerLink]="['/tipoarticulo', oTipoarticulo.club.id]"
                 role="button"
-                title="Editar"
+                title="filtrar por club"
                 ><i class="bi bi-funnel-fill" aria-hidden="true"></i
               ></a>
             </td>
             <td style="text-align: center">
-              @if (tipoarticulo.articulos === 0) {
+              @if (oTipoarticulo.articulos === 0) {
                 <i class="bi bi-ban" aria-hidden="true"></i>
               } @else {
-                <a [routerLink]="['/articulo', tipoarticulo.id]">
-                  {{ tipoarticulo.articulos }}
+                <a [routerLink]="['/articulo', oTipoarticulo.id]">
+                  {{ oTipoarticulo.articulos }}
                 </a>
               }
             </td>
@@ -93,21 +123,21 @@
                 <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
                   <a
                     class="btn btn-primary btn-sm"
-                    [routerLink]="['/tipoarticulo/view', tipoarticulo.id]"
+                    [routerLink]="['/tipoarticulo/view', oTipoarticulo.id]"
                     role="button"
                     title="Ver"
                     ><i class="bi bi-eye" aria-hidden="true"></i
                   ></a>
                   <a
                     class="btn btn-warning btn-sm"
-                    [routerLink]="['/tipoarticulo/edit', tipoarticulo.id]"
+                    [routerLink]="['/tipoarticulo/edit', oTipoarticulo.id]"
                     role="button"
                     title="Editar"
                     ><i class="bi bi-pencil" aria-hidden="true"></i
                   ></a>
                   <a
                     class="btn btn-danger btn-sm"
-                    [routerLink]="['/tipoarticulo/delete', tipoarticulo.id]"
+                    [routerLink]="['/tipoarticulo/delete', oTipoarticulo.id]"
                     role="button"
                     title="Eliminar"
                     ><i class="bi bi-trash" aria-hidden="true"></i

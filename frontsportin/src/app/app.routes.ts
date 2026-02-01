@@ -7,5 +7,6 @@ export const routes: Routes = [
     { path: '', component: Home },
     { path: 'articulo', component: ArticuloPlistAdminRouted},
     { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},
-    {path: 'tipoarticulo', component : TipoarticuloPlistAdminRouted},  
+    { path: 'tipoarticulo', component : TipoarticuloPlistAdminRouted}, 
+    { path: 'tipoarticulo/:club', component : TipoarticuloPlistAdminRouted}
 ];

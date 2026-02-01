@@ -6,7 +6,7 @@ import { Paginacion } from '../../shared/paginacion/paginacion';
 import { BotoneraRpp } from '../../shared/botonera-rpp/botonera-rpp';
 import { TipoarticuloService } from '../../../service/tipoarticulo';
 import { TrimPipe } from '../../../pipe/trim-pipe';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject } from 'rxjs/internal/Subject';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
@@ -46,10 +46,16 @@ export class TipoarticuloPlistAdminRouted {
   descripcion = signal<string>('');
   private searchSubscription?: Subscription;
 
-  constructor(private oTipoarticuloService: TipoarticuloService) {}
+  constructor(
+    private oTipoarticuloService: TipoarticuloService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
-    this.getPage();
+    const id = this.route.snapshot.paramMap.get('club');
+    if (id) {
+      this.club.set(+id);
+    }
 
     // Configurar el debounce para la búsqueda
     this.searchSubscription = this.searchSubject
@@ -59,6 +65,13 @@ export class TipoarticuloPlistAdminRouted {
         this.numPage.set(0);
         this.getPage();
       });
+    this.getPage();
+  }
+  ngOnDestroy(): void {
+    // Cancelar la suscripción al destruir el componente
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 
   getPage() {
@@ -99,5 +112,16 @@ export class TipoarticuloPlistAdminRouted {
   onSearchDescription(value: string) {
     // Emitir el valor al Subject para que sea procesado con debounce
     this.searchSubject.next(value);
+  }
+
+  onOrder(order: string) {
+    if (this.orderField() === order) {
+      this.orderDirection.set(this.orderDirection() === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.orderField.set(order);
+      this.orderDirection.set('asc');
+    }
+    this.numPage.set(0);
+    this.getPage();
   }
 }
