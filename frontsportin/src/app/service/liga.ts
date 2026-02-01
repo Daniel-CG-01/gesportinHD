@@ -28,7 +28,7 @@ export class LigaService {
     if (equipo > 0) {
       return this.oHttp.get<IPage<ILiga>>(
         serverURL +
-          `/liga?page=${page}&size=${rpp}&sort=${order},${direction}&equipo=${equipo}`,
+          `/liga?page=${page}&size=${rpp}&sort=${order},${direction}&idEquipo=${equipo}`,
       );
     }
     if (nombre && nombre.length > 0) {

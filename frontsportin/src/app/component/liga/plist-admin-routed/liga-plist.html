@@ -3,17 +3,20 @@
         <h1>Mantenimiento de Liga</h1>
     </div>
 
-  <div class="d-flex justify-content-center my-2">
-    <input
-      class="form-control me-2"
-      type="search"      
-      placeholder="Buscar por nombre"
-      aria-label="Search"
-      (input)="onSearchName($event.target.value)"
-      [value]="nombre()"
-      name="searchName"
-    />
-  </div>
+  <!-- Búsqueda por nombre usando debounce -->
+  @if (equipo() <= 0) {
+    <div class="d-flex justify-content-center my-2">
+      <input
+        class="form-control me-2"
+        type="search"      
+        placeholder="Buscar por nombre"
+        aria-label="Search"
+        (input)="onSearchName($event.target.value)"
+        [value]="nombre()"
+        name="searchName"
+      />
+    </div>
+  }
 
     <!-- Total registros -->
     <div class="d-flex justify-content-center my-1">
