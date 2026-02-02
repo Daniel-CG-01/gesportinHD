@@ -1,13 +1,1 @@
-﻿.usuario-plist .header-inline {
-  display: inline-flex;
-  align-items: center;
-}
-
-.usuario-plist .table th {
-  user-select: none;
-}
-
-.usuario-plist .table td,
-.usuario-plist .table th {
-  vertical-align: middle;
-}
+﻿
