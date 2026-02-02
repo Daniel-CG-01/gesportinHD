@@ -6,6 +6,7 @@ import { FacturaPlistAdminRouted } from './component/factura/plist-admin-routed/
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'articulo', component: ArticuloPlistAdminRouted},
-    { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},{ path: 'factura', component: FacturaPlistAdminRouted },
+    { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},
+    { path: 'factura', component: FacturaPlistAdminRouted },
     { path: 'factura/:usuario', component: FacturaPlistAdminRouted }    
 ];
