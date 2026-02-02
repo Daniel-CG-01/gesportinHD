@@ -122,7 +122,7 @@
           <tr>
             <th scope="row" style="text-align: center">{{ oTemporada.id }}</th>
             <td>{{ oTemporada.descripcion }}</td>
-            <td>
+            <td style="text-align: center">
               <a [routerLink]="['/club', '/view', oTemporada.club.id]">
                 {{ oTemporada.club.nombre | trim: 20 }}
                 {{ ' (' + oTemporada.club.id + ')' }}
@@ -136,11 +136,11 @@
                 ><i class="bi bi-funnel-fill" aria-hidden="true"></i
               ></a>
             </td>
-            <td style="text-align: center">
+            <td class="text-center">
               @if (oTemporada.categorias === 0) {
                 <i class="bi bi-ban" aria-hidden="true"></i>
               } @else {
-                <a [routerLink]="['/categoria', '/view', oTemporada.categorias]">
+                <a [routerLink]="['/categoria', oTemporada.categorias]">
                   {{ oTemporada.categorias }}
                 </a>
               }
