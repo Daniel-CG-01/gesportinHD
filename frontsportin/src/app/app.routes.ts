@@ -24,6 +24,7 @@ import { PagoPlistComponent } from './component/pago/plist-admin-routed/pago-pli
 import { PuntuacionPlistAdminRouted } from './component/puntuacion/plist-admin-routed/puntuacion-plist';
 import { ViewAdminRouted } from './component/noticia/view-admin-routed/view-admin-routed';
 import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
+import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
 
 
 export const routes: Routes = [
