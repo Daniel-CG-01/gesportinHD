@@ -156,7 +156,7 @@
                 <!-- Botón alineado a la derecha para filtrar categoria -->
                 <a
                   class="btn btn-warning btn-sm ms-2 float-end"
-                  [routerLink]="['/equipo', oEquipo.categoria.id]"
+                  [routerLink]="['/equipo/categoria', oEquipo.categoria.id]"
                   role="button"
                   title="Filtrar por categoría"
                   ><i class="bi bi-funnel-fill" aria-hidden="true"></i
@@ -177,7 +177,7 @@
               @if (oEquipo.jugadores === 0) {
                 <i class="bi bi-ban" aria-hidden="true"></i>
               } @else {
-                <a [routerLink]="['/jugador', oEquipo.id]">
+                <a [routerLink]="['/jugador/equipo', oEquipo.id]">
                   {{ oEquipo.jugadores }}
                 </a>
               }

@@ -37,12 +37,12 @@ export class PuntuacionPlistAdminRouted {
   ) {}
 
   ngOnInit() {
-    const idUsuario = this.route.snapshot.paramMap.get('usuario');
+    const idUsuario = this.route.snapshot.paramMap.get('id_usuario');
     if (idUsuario) {
       this.usuario.set(+idUsuario);
     }
 
-    const idNoticia = this.route.snapshot.paramMap.get('noticia');
+    const idNoticia = this.route.snapshot.paramMap.get('id_noticia');
     if (idNoticia) {
       this.noticia.set(+idNoticia);
     }

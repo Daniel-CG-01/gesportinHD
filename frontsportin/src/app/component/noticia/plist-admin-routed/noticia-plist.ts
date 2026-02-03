@@ -51,7 +51,7 @@ export class NoticiaPlistAdminRouted {
   ngOnInit() {
     // Suscribirse a cambios en los parámetros de ruta
     this.route.paramMap.subscribe(params => {
-      const id = params.get('club');
+      const id = params.get('id_club');
       if (id) {
         this.club.set(+id);
       } else {

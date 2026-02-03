@@ -140,7 +140,7 @@
               </a>
               <a
                 class="btn btn-warning btn-sm ms-2 float-end"
-                [routerLink]="['/categoria', oCategoria.temporada.id]"
+                [routerLink]="['/categoria/temporada', oCategoria.temporada.id]"
                 role="button"
                 title="Filtrar por temporada"
               >
@@ -150,7 +150,7 @@
               @if (oCategoria.equipos === 0) {
                 <i class="bi bi-ban" aria-hidden="true"></i> 
               } @else {
-                <a [routerLink]="['/equipo', oCategoria.id]">
+                <a [routerLink]="['/equipo/categoria', oCategoria.id]">
                   {{ oCategoria.equipos }}
                 </a>
               }

@@ -59,7 +59,7 @@ export class PlistEquipo {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('categoria');
+    const id = this.route.snapshot.paramMap.get('id_categoria');
     if (id) {
       this.categoria.set(+id);
     }

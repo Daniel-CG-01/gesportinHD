@@ -53,19 +53,16 @@ export class ComentarioartPlistAdminRouted {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('articulo') && params.get('usuario');
+      const idArticulo = params.get('id_articulo');
+      const idUsuario = params.get('id_usuario');
 
-      if (this.route.snapshot.url.some(u => u.path === 'articulo')) {
-        this.articulo.set(+id!);
+      if (idArticulo) {
+        this.articulo.set(+idArticulo);
         this.usuario.set(0);
-      }
-
-      if (this.route.snapshot.url.some(u => u.path === 'usuario')) {
+      } else if (idUsuario) {
         this.articulo.set(0);
-        this.usuario.set(+id!);
-      }
-
-      if (!id) {
+        this.usuario.set(+idUsuario);
+      } else {
         this.articulo.set(0);
         this.usuario.set(0);
       }
