@@ -1,3 +1,4 @@
+// Daniel Zanón Rodas
 import { Component, signal, computed } from '@angular/core';
 import { IPage } from '../../model/plist';
 import { ActivatedRoute, RouterLink } from '@angular/router';

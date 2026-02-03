@@ -23,7 +23,7 @@ import { ComentarioPlistAdminRouted } from './component/comentario/plist-admin-r
 import { PagoPlistComponent } from './component/pago/plist-admin-routed/pago-plist';
 import { PuntuacionPlistAdminRouted } from './component/puntuacion/plist-admin-routed/puntuacion-plist';
 import { ViewAdminRouted } from './component/noticia/view-admin-routed/view-admin-routed';
-import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
+// import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
 
 
 export const routes: Routes = [
@@ -78,8 +78,8 @@ export const routes: Routes = [
     { path: 'puntuacion', component: PuntuacionPlistAdminRouted},
     { path: 'puntuacion/noticia/:noticia', component: PuntuacionPlistAdminRouted},
     { path: 'puntuacion/usuario/:usuario', component: PuntuacionPlistAdminRouted},
-    { path: 'comentarioart', component: ComentarioartPlistAdminRouted},
-    { path: 'comentarioart/articulo/:id', component: ComentarioartPlistAdminRouted},
-    { path: 'comentarioart/usuario/:id', component: ComentarioartPlistAdminRouted},
+    // { path: 'comentarioart', component: ComentarioartPlistAdminRouted},
+    // { path: 'comentarioart/articulo/:id', component: ComentarioartPlistAdminRouted},
+    // { path: 'comentarioart/usuario/:id', component: ComentarioartPlistAdminRouted},
 
 ];
