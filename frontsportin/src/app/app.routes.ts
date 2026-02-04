@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { Home } from './component/shared/home/home';
 import { UsuarioPlist } from './component/usuario/usuario-plist/usuario-plist';
 import { ArticuloPlistAdminRouted } from './component/articulo/plist-admin-routed/articulo-plist';
+import { ArticuloViewAdminRouted } from './component/articulo/view-admin-routed/articulo-view';
 import { UsuarioViewRouted } from './component/usuario/view-routed/usuario-view';
 import { CategoriaPlistAdminRouted } from './component/categoria/plist-admin-routed/categoria-plist';
 import { PartidoPlistAdminRouted } from './component/partido/plist-admin-routed/partido-plist';
@@ -24,6 +25,8 @@ import { ComentarioViewRouted } from './component/comentario/view-routed/comenta
 import { PagoPlistComponent } from './component/pago/plist-admin-routed/pago-plist';
 import { PuntuacionPlistAdminRouted } from './component/puntuacion/plist-admin-routed/puntuacion-plist';
 import { NoticiaViewAdminRouted } from './component/noticia/view-admin-routed/view-admin-routed';
+import { FacturaViewAdminRouted } from './component/factura/view-admin-routed/factura-view';
+import { ViewAdminRouted } from './component/noticia/view-admin-routed/view-admin-routed';
 import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
 import { CarritoViewAdminRouted } from './component/carrito/view-admin-routed/view-admin-routed';
 
@@ -43,11 +46,15 @@ export const routes: Routes = [
     { path: 'articulo', component: ArticuloPlistAdminRouted},
     { path: 'articulo/tipoarticulo/:id_tipoarticulo', component: ArticuloPlistAdminRouted},
     { path: 'usuario/:id', component: UsuarioViewRouted},
+    { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},
+    { path: 'articulo/view/:id', component: ArticuloViewAdminRouted},
     { path: 'categoria', component: CategoriaPlistAdminRouted},
     { path: 'categoria/temporada/:id_temporada', component: CategoriaPlistAdminRouted},
     { path: 'partido', component: PartidoPlistAdminRouted},
     { path: 'partido/liga/:id_liga', component: PartidoPlistAdminRouted},
     { path: 'factura', component: FacturaPlistAdminRouted },
+    { path: 'factura/:usuario', component: FacturaPlistAdminRouted },
+    { path: 'factura/view/:id', component: FacturaViewAdminRouted },
     { path: 'factura/usuario/:id_usuario', component: FacturaPlistAdminRouted },
     { path: 'compra', component: CompraPlistAdminRouted },
     { path: 'compra/articulo/:id_articulo', component: CompraPlistAdminRouted },
@@ -68,6 +75,7 @@ export const routes: Routes = [
     { path: 'tipousuario', component: TipousuarioPlistAdminRouted},
     { path: 'equipo', component: PlistEquipo },
     { path: 'equipo/categoria/:id_categoria', component: PlistEquipo },
+    { path: 'equipo/usuario/:id_usuario', component: PlistEquipo },
     { path: 'carrito', component: CarritoPlistAdminRouted },
     { path: 'carrito/usuario/:id_usuario', component: CarritoPlistAdminRouted },
     { path: 'carrito/articulo/:id_articulo', component: CarritoPlistAdminRouted },
