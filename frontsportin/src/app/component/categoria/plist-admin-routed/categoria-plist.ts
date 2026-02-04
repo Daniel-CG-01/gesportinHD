@@ -67,13 +67,13 @@ export class CategoriaPlistAdminRouted {
 
   ngOnInit() {
     // Leer el parámetro inicial
-    const id = this.route.snapshot.paramMap.get('id_temporada');
+    const id = this.route.snapshot.queryParamMap.get('id_temporada');
     if (id) {
       this.temporada.set(+id);
     }
 
     // Suscribirse a cambios en los parámetros de ruta
-    this.routeSubscription = this.route.paramMap.subscribe(params => {
+    this.routeSubscription = this.route.queryParamMap.subscribe(params => {
       const temporadaId = params.get('id_temporada');
       console.log('Cambio en ruta, temporada:', temporadaId);
       
