@@ -157,7 +157,9 @@
                     <div class="text-muted small text-uppercase">Temporada</div>
                     <div class="fw-semibold">
                       @if (oEquipo()?.categoria?.temporada) {
-                        {{ oEquipo()?.categoria?.temporada?.descripcion }} ({{ oEquipo()?.categoria?.temporada?.id }})
+                        <a [routerLink]="['/temporada/view', oEquipo()?.categoria?.temporada?.id]">
+                          {{ oEquipo()?.categoria?.temporada?.descripcion }} ({{ oEquipo()?.categoria?.temporada?.id }})
+                        </a>
                       } @else {
                         -
                       }
