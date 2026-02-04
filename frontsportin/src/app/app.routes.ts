@@ -8,6 +8,7 @@ import { CategoriaPlistAdminRouted } from './component/categoria/plist-admin-rou
 import { PartidoPlistAdminRouted } from './component/partido/plist-admin-routed/partido-plist';
 import { FacturaPlistAdminRouted } from './component/factura/plist-admin-routed/factura-plist';
 import { CompraPlistAdminRouted } from './component/compra/plist-admin-routed/compra-plist';
+import { CompraViewRouted } from './component/compra/view-routed/compra-view';
 import { RolusuarioPlist } from './component/rolusuario/plist-admin-routed/rolusuario-plist';
 import { TipoarticuloPlistAdminRouted } from './component/tipoarticulo/plist-admin-routed/tipoarticulo-plist';
 import { JugadorPlisComponent } from './component/jugador/jugadorPlist/jugador-plist';
@@ -50,6 +51,7 @@ export const routes: Routes = [
     { path: 'compra', component: CompraPlistAdminRouted },
     { path: 'compra/articulo/:id_articulo', component: CompraPlistAdminRouted },
     { path: 'compra/factura/:id_factura', component: CompraPlistAdminRouted },
+    { path: 'compra/view/:id', component: CompraViewRouted },
     { path: 'rolusuario', component: RolusuarioPlist },  
     { path: 'tipoarticulo', component : TipoarticuloPlistAdminRouted}, 
     { path: 'tipoarticulo/club/:id_club', component : TipoarticuloPlistAdminRouted},
