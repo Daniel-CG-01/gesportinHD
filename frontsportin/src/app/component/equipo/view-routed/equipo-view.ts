@@ -4,11 +4,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { EquipoService } from '../../../service/equipo';
 import { IEquipo } from '../../../model/equipo';
+import { DatetimePipe } from '../../../pipe/datetime-pipe';
 
 
 @Component({
   selector: 'app-equipo-view',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, DatetimePipe],
   templateUrl: './equipo-view.html',
   styleUrl: './equipo-view.css',
 })

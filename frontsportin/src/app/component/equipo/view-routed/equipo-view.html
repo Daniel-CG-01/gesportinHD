@@ -232,6 +232,138 @@
                 </div>
                 <div class="col-sm-6 col-lg-2">
                   <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Fecha Alta</div>
+                    <div class="fw-semibold">{{ oEquipo()?.entrenador?.fechaAlta | datetime }}</div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Género</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.genero === 0) {
+                        Femenino
+                      } @else if (oEquipo()?.entrenador?.genero === 1) {
+                        Masculino
+                      } @else {
+                        -
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Tipo Usuario</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.tipousuario) {
+                        <a [routerLink]="['/tipousuario/view', oEquipo()?.entrenador?.tipousuario?.id]">
+                          {{ oEquipo()?.entrenador?.tipousuario?.descripcion }} ({{ oEquipo()?.entrenador?.tipousuario?.id }})
+                        </a>
+                      } @else {
+                        -
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Rol Usuario</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.rolusuario) {
+                        <a [routerLink]="['/rolusuario/view', oEquipo()?.entrenador?.rolusuario?.id]">
+                          {{ oEquipo()?.entrenador?.rolusuario?.descripcion }} ({{ oEquipo()?.entrenador?.rolusuario?.id }})
+                        </a>
+                      } @else {
+                        -
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Club</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.club) {
+                        <a [routerLink]="['/club/view', oEquipo()?.entrenador?.club?.id]">
+                          {{ oEquipo()?.entrenador?.club?.nombre }} ({{ oEquipo()?.entrenador?.club?.id }})
+                        </a>
+                      } @else {
+                        -
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Comentarios</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.comentarios === 0) {
+                        0
+                      } @else {
+                        <a [routerLink]="['/comentario/usuario', oEquipo()?.entrenador?.id]">
+                          {{ oEquipo()?.entrenador?.comentarios ?? 0 }}
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Puntuaciones</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.puntuaciones === 0) {
+                        0
+                      } @else {
+                        <a [routerLink]="['/puntuacion/usuario', oEquipo()?.entrenador?.id]">
+                          {{ oEquipo()?.entrenador?.puntuaciones ?? 0 }}
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Comentarios Art.</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.comentarioarts === 0) {
+                        0
+                      } @else {
+                        <a [routerLink]="['/comentarioart/usuario', oEquipo()?.entrenador?.id]">
+                          {{ oEquipo()?.entrenador?.comentarioarts ?? 0 }}
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Carritos</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.carritos === 0) {
+                        0
+                      } @else {
+                        <a [routerLink]="['/carrito/usuario', oEquipo()?.entrenador?.id]">
+                          {{ oEquipo()?.entrenador?.carritos ?? 0 }}
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Facturas</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.facturas === 0) {
+                        0
+                      } @else {
+                        <a [routerLink]="['/factura/usuario', oEquipo()?.entrenador?.id]">
+                          {{ oEquipo()?.entrenador?.facturas ?? 0 }}
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Equipos</div>
                     <div class="fw-semibold">
                       @if (oEquipo()?.entrenador?.equiposentrenados === 0) {
@@ -239,6 +371,20 @@
                       } @else {
                         <a [routerLink]="['/equipo/usuario', oEquipo()?.entrenador?.id]">
                           {{ oEquipo()?.entrenador?.equiposentrenados ?? 0 }}
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Jugadores</div>
+                    <div class="fw-semibold">
+                      @if (oEquipo()?.entrenador?.jugadores === 0) {
+                        0
+                      } @else {
+                        <a [routerLink]="['/jugador/usuario', oEquipo()?.entrenador?.id]">
+                          {{ oEquipo()?.entrenador?.jugadores ?? 0 }}
                         </a>
                       }
                     </div>
