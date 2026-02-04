@@ -101,7 +101,7 @@
               <div class="col-5 text-muted small text-uppercase">Artículo</div>
               <div class="col-7 fw-semibold small">
                 @if (oCompra()?.articulo) {
-                  <a [routerLink]="['/articulo', '/view', oCompra()?.articulo?.id]">
+                  <a [routerLink]="['/articulo', 'view', oCompra()?.articulo?.id]">
                     {{ oCompra()?.articulo?.descripcion }} ({{ oCompra()?.articulo?.id }})
                   </a>
                 } @else {
@@ -111,8 +111,7 @@
               <div class="col-5 text-muted small text-uppercase">Factura</div>
               <div class="col-7 fw-semibold small">
                 @if (oCompra()?.factura) {
-                  <a [routerLink]="['/factura', 'view', oCompra()?.factura?.id]">ID
-                    {{ oCompra()?.factura?.id }}
+                  <a [routerLink]="['/factura', 'view', oCompra()?.factura?.id]">ID ({{ oCompra()?.factura?.id }})
                   </a>
                 } @else {
                   Sin factura
@@ -222,6 +221,62 @@
               </div>
             } @else {
               <div class="text-muted">Sin artículo asignado.</div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="card border">
+          <div class="card-header bg-light small text-uppercase fw-semibold">Factura (detalles)</div>
+          <div class="card-body p-2">
+            @if (oCompra()?.factura) {
+              <div class="row g-2">
+                <div class="col-sm-6 col-lg-3">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">ID</div>
+                    <div class="fw-semibold">{{ oCompra()?.factura?.id }}</div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Fecha</div>
+                    <div class="fw-semibold">
+                      @if (oCompra()?.factura?.fecha) {
+                        {{ oCompra()?.factura?.fecha | datetime }}
+                      } @else {
+                        -
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Compras</div>
+                    <div class="fw-semibold">{{ oCompra()?.factura?.compras }}</div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Usuario</div>
+                    <div class="fw-semibold">
+                      @if (oCompra()?.factura?.usuario) {
+                        {{ oCompra()?.factura?.usuario?.id }}
+                      } @else {
+                        -
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="border rounded p-2 bg-white">
+                    <div class="text-muted small text-uppercase">Facturas usuario</div>
+                    <div class="fw-semibold">{{ oCompra()?.factura?.usuario?.facturas }}</div>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="text-muted">Sin factura asignada.</div>
             }
           </div>
         </div>
