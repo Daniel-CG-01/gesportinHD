@@ -45,7 +45,7 @@ export class PagoService {
   }
 
   get(id: number): Observable<IPago> {
-        return this.http.get<IPago>(`${serverURL}/factura/${id}`);
+        return this.http.get<IPago>(`${serverURL}/pago/${id}`);
       }
 
   count(): Observable<number> {

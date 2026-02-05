@@ -64,7 +64,7 @@
           <div class="card-header bg-light small text-uppercase fw-semibold">Relaciones</div>
           <div class="card-body p-2">
             <div class="row g-1">
-              <div class="col-5 text-muted small text-uppercase">Jugadores</div>
+              <div class="col-5 text-muted small text-uppercase">Jugador</div>
               <div class="col-7 fw-semibold small">
                 <a class="text-decoration-none" [routerLink]="['/jugador/view', oPago()?.jugador?.id]">
                   {{ oPago()?.jugador?.usuario?.nombre }} {{ oPago()?.jugador?.usuario?.apellido1 }} {{ oPago()?.jugador?.usuario?.apellido2 }} ({{ oPago()?.jugador?.id }})
@@ -72,9 +72,9 @@
               </div>
             </div>
             <div class="row g-1">
-              <div class="col-5 text-muted small text-uppercase">Cuotas</div>
+              <div class="col-5 text-muted small text-uppercase">Cuota</div>
               <div class="col-7 fw-semibold small">
-                <a class="text-decoration-none" [routerLink]="['/jugador/view', oPago()?.cuota?.id]">
+                <a class="text-decoration-none" [routerLink]="['/cuota/view', oPago()?.cuota?.id]">
                  {{ oPago()?.cuota?.descripcion }} ({{ oPago()?.cuota?.id }})
                 </a>  
               </div>
@@ -127,7 +127,7 @@
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Pagos</div>
                     <div class="fw-semibold">
-                      <a class="text-decoration-none" [routerLink]="['/pago/jugador/', oPago()?.jugador?.usuario?.tipousuario?.id]">
+                      <a class="text-decoration-none" [routerLink]="['/pago/jugador/', oPago()?.jugador?.usuario?.id]">
                       {{ oPago()?.jugador?.pagos }}
                       </a>
                     </div>
@@ -172,20 +172,14 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Cantidad</div>
-                    <div class="fw-semibold">{{ oPago()?.cuota?.cantidad }}</div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                  <div class="border rounded p-2 bg-white">
-                    <div class="text-muted small text-uppercase">¿Es capitán?</div>
-                    <div class="fw-semibold">{{ oPago()?.jugador?.capitan }}</div>
+                    <div class="fw-semibold">{{ oPago()?.cuota?.cantidad }}€</div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Equipo</div>
                     <div class="fw-semibold">
-                      <a class="text-decoration-none" [routerLink]="['/cuota/equipo/', oPago()?.cuota?.equipo?.id]">
+                      <a class="text-decoration-none" [routerLink]="['/equipo/view/', oPago()?.cuota?.equipo?.id]">
                       {{ oPago()?.cuota?.equipo?.nombre }} ({{ oPago()?.cuota?.equipo?.id }})
                       </a>
                     </div>
