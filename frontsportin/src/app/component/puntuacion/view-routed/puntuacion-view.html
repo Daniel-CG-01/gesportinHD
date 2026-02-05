@@ -150,7 +150,15 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Comentarios</div>
-                    <div class="fw-semibold">{{ oPuntuacion()?.noticia?.comentarios }}</div>
+                    <div class="fw-semibold">
+                      @if (oPuntuacion()?.noticia?.id) {
+                        <a class="text-decoration-none" [routerLink]="['/comentario/plist', oPuntuacion()?.noticia?.id]">
+                          {{ oPuntuacion()?.noticia?.comentarios }}
+                        </a>
+                      } @else {
+                        {{ oPuntuacion()?.noticia?.comentarios }}
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
@@ -162,7 +170,15 @@
                 <div class="col-12">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Contenido</div>
-                    <div class="fw-semibold">{{ oPuntuacion()?.noticia?.contenido }}</div>
+                    <div class="fw-semibold">
+                      @if (oPuntuacion()?.noticia?.id) {
+                        <a class="text-decoration-none" [routerLink]="['/noticia/view', oPuntuacion()?.noticia?.id]">
+                          {{ oPuntuacion()?.noticia?.contenido }}
+                        </a>
+                      } @else {
+                        {{ oPuntuacion()?.noticia?.contenido }}
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
