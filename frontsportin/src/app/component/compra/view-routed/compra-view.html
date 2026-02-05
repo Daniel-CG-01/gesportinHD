@@ -129,32 +129,72 @@
             <div class="row g-2">
               <div class="col-6">
                 <div class="border rounded p-2 bg-white">
-                  <div class="text-muted small text-uppercase">Coment. art.</div>
-                  <div class="fw-bold">{{ oCompra()?.articulo?.comentarioarts }}</div>
+                  <div class="text-muted small text-uppercase">Comentario. art.</div>
+                  <div class="fw-bold">
+                    @if ((oCompra()?.articulo?.comentarioarts ?? 0) > 0) {
+                      <a [routerLink]="['/comentarioart/articulo', oCompra()?.articulo?.id]" class="text-decoration-none">
+                        {{ oCompra()?.articulo?.comentarioarts }}
+                      </a>
+                    } @else {
+                      0
+                    }
+                  </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="border rounded p-2 bg-white">
                   <div class="text-muted small text-uppercase">Compras art.</div>
-                  <div class="fw-bold">{{ oCompra()?.articulo?.compras }}</div>
+                  <div class="fw-bold">
+                    @if ((oCompra()?.articulo?.compras ?? 0) > 0) {
+                      <a [routerLink]="['/compra/articulo', oCompra()?.articulo?.id]" class="text-decoration-none">
+                        {{ oCompra()?.articulo?.compras }}
+                      </a>
+                    } @else {
+                      0
+                    }
+                  </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="border rounded p-2 bg-white">
                   <div class="text-muted small text-uppercase">Carritos art.</div>
-                  <div class="fw-bold">{{ oCompra()?.articulo?.carritos }}</div>
+                  <div class="fw-bold">
+                    @if ((oCompra()?.articulo?.carritos ?? 0) > 0) {
+                      <a [routerLink]="['/carrito/articulo', oCompra()?.articulo?.id]" class="text-decoration-none">
+                        {{ oCompra()?.articulo?.carritos }}
+                      </a>
+                    } @else {
+                      0
+                    }
+                  </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="border rounded p-2 bg-white">
                   <div class="text-muted small text-uppercase">Compras factura</div>
-                  <div class="fw-bold">{{ oCompra()?.factura?.compras }}</div>
+                  <div class="fw-bold">
+                    @if ((oCompra()?.factura?.compras ?? 0) > 0) {
+                      <a [routerLink]="['/compra/factura', oCompra()?.factura?.id]" class="text-decoration-none">
+                        {{ oCompra()?.factura?.compras }}
+                      </a>
+                    } @else {
+                      0
+                    }
+                  </div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="border rounded p-2 bg-white">
                   <div class="text-muted small text-uppercase">Facturas usuario</div>
-                  <div class="fw-bold">{{ oCompra()?.factura?.usuario?.facturas }}</div>
+                  <div class="fw-bold">
+                    @if ((oCompra()?.factura?.usuario?.facturas ?? 0) > 0) {
+                      <a [routerLink]="['/factura', oCompra()?.factura?.usuario?.id]" class="text-decoration-none">
+                        {{ oCompra()?.factura?.usuario?.facturas }}
+                      </a>
+                    } @else {
+                      0
+                    }
+                  </div>
                 </div>
               </div>
             </div>
@@ -171,7 +211,15 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">ID</div>
-                    <div class="fw-semibold">{{ oCompra()?.articulo?.id }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.articulo?.id ?? 0) > 0) {
+                        <a [routerLink]="['/articulo', 'view', oCompra()?.articulo?.id]" class="text-decoration-none">
+                          {{ oCompra()?.articulo?.id }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
@@ -203,19 +251,43 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Comentarios</div>
-                    <div class="fw-semibold">{{ oCompra()?.articulo?.comentarioarts }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.articulo?.comentarioarts ?? 0) > 0) {
+                        <a [routerLink]="['/comentarioart/articulo', oCompra()?.articulo?.id]" class="text-decoration-none">
+                          {{ oCompra()?.articulo?.comentarioarts }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Compras</div>
-                    <div class="fw-semibold">{{ oCompra()?.articulo?.compras }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.articulo?.compras ?? 0) > 0) {
+                        <a [routerLink]="['/compra/articulo', oCompra()?.articulo?.id]" class="text-decoration-none">
+                          {{ oCompra()?.articulo?.compras }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Carritos</div>
-                    <div class="fw-semibold">{{ oCompra()?.articulo?.carritos }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.articulo?.carritos ?? 0) > 0) {
+                        <a [routerLink]="['/carrito/articulo', oCompra()?.articulo?.id]" class="text-decoration-none">
+                          {{ oCompra()?.articulo?.carritos }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
@@ -235,7 +307,15 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">ID</div>
-                    <div class="fw-semibold">{{ oCompra()?.factura?.id }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.factura?.id ?? 0) > 0) {
+                        <a [routerLink]="['/factura', 'view', oCompra()?.factura?.id]" class="text-decoration-none">
+                          {{ oCompra()?.factura?.id }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
@@ -253,17 +333,27 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Compras</div>
-                    <div class="fw-semibold">{{ oCompra()?.factura?.compras }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.factura?.compras ?? 0) > 0) {
+                        <a [routerLink]="['/compra/factura', oCompra()?.factura?.id]" class="text-decoration-none">
+                          {{ oCompra()?.factura?.compras }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Usuario</div>
                     <div class="fw-semibold">
-                      @if (oCompra()?.factura?.usuario) {
-                        {{ oCompra()?.factura?.usuario?.id }}
+                      @if ((oCompra()?.factura?.usuario?.id ?? 0) > 0) {
+                        <a [routerLink]="['/usuario', 'view', oCompra()?.factura?.usuario?.id]" class="text-decoration-none">
+                          {{ oCompra()?.factura?.usuario?.id }}
+                        </a>
                       } @else {
-                        -
+                        0
                       }
                     </div>
                   </div>
@@ -271,7 +361,15 @@
                 <div class="col-sm-6 col-lg-3">
                   <div class="border rounded p-2 bg-white">
                     <div class="text-muted small text-uppercase">Facturas usuario</div>
-                    <div class="fw-semibold">{{ oCompra()?.factura?.usuario?.facturas }}</div>
+                    <div class="fw-semibold">
+                      @if ((oCompra()?.factura?.usuario?.facturas ?? 0) > 0) {
+                        <a [routerLink]="['/factura', oCompra()?.factura?.usuario?.id]" class="text-decoration-none">
+                          {{ oCompra()?.factura?.usuario?.facturas }}
+                        </a>
+                      } @else {
+                        0
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
