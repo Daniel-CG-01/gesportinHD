@@ -9,7 +9,7 @@ import { CategoriaDetailAdminUnrouted } from '../detail-admin-unrouted/categoria
 
 @Component({
   selector: 'app-categoria-view',
-  imports: [CommonModule, RouterLink, CategoriaDetailAdminUnrouted],
+  imports: [CommonModule, CategoriaDetailAdminUnrouted],
   templateUrl: './categoria-view.html',
   styleUrl: './categoria-view.css',
 })

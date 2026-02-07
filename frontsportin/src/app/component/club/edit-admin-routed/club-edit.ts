@@ -9,7 +9,7 @@ import { IClub } from '../../../model/club';
 
 @Component({
   selector: 'app-club-edit',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink], 
+  imports: [CommonModule, ReactiveFormsModule], 
   templateUrl: './club-edit.html', 
   styleUrl: './club-edit.css',
 })
