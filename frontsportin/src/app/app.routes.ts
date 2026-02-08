@@ -44,6 +44,7 @@ import { CategoriaViewAdminRouted } from './component/categoria/view-admin-route
 import { LigaViewRouted } from './component/liga/view-routed/liga-view';
 import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
 import { PagoDeleteAdminRouted } from './component/pago/delete-admin-routed/pago-delete';
+import { ClubDeleteAdminRouted } from './component/club/delete-admin-routed/club-delete';
 
 
 export const routes: Routes = [
@@ -94,6 +95,7 @@ export const routes: Routes = [
     { path: 'club/plist', component: ClubPlistAdminRouted},
     { path: 'club', component: ClubPlistAdminRouted},
     { path: 'club/view/:id', component: ClubViewAdminRouted},
+    { path: 'club/delete/:id', component: ClubDeleteAdminRouted},
     { path: 'cuota', component: CuotaPlistAdminRouted},
     { path: 'cuota/equipo/:id_equipo', component: CuotaPlistAdminRouted},
     { path: 'cuota/view/:id', component: CuotaViewAdminRouted},

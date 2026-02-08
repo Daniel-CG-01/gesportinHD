@@ -1,7 +1,7 @@
 import { Component, inject, input, Input, OnInit, Signal, signal } from '@angular/core';
 import { IClub } from '../../../model/club';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ClubService } from '../../../service/club';
 import { DatetimePipe } from '../../../pipe/datetime-pipe';
 
