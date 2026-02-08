@@ -53,4 +53,8 @@ export class CarritoService {
   getById(id: number) {
     return this.oHttp.get<ICarrito>(`${this.carritoURL}/${id}`);
   }
+
+  delete(id: number): Observable<number> {
+    return this.oHttp.delete<number>(serverURL + '/equipo/' + id);
+  }
 }
