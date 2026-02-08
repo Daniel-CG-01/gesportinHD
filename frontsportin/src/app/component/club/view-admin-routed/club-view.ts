@@ -18,18 +18,19 @@ export class ClubViewAdminRouted implements OnInit {
   oClub = signal<IClub | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
+  id_club = signal<number>(0);
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
-    const id = idParam ? Number(idParam) : NaN;
+    this.id_club.set(idParam ? Number(idParam) : NaN);
 
-    if (isNaN(id)) {
+    if (isNaN(this.id_club())) {
       this.error.set('ID no valido');
       this.loading.set(false);
       return;
     }
 
-    this.load(id);
+    this.load(this.id_club());
   }
 
   private load(id: number) {
