@@ -48,6 +48,8 @@ import { CategoriaEditAdminRouted } from './component/categoria/edit-admin-route
 import { LigaViewRouted } from './component/liga/view-routed/liga-view';
 import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
 import { PagoDeleteAdminRouted } from './component/pago/delete-admin-routed/pago-delete';
+import { CategoriaDeleteAdminRouted } from './component/categoria/delete-admin-routed/categoria-delete';
+import { ClubEditAdminRouted } from './component/club/edit-admin-routed/club-edit';
 import { CarritoDeleteAdminRouted } from './component/carrito/delete-admin-routed/carrito-delete';
 import { ComentarioartDeleteAdminRouted } from './component/comentarioart/delete-admin-routed/delete-admin-routed';
 import { FacturaDeleteAdminRouted } from './component/factura/delete-admin-routed/factura-delete';
@@ -106,6 +108,7 @@ export const routes: Routes = [
     { path: 'club/plist', component: ClubPlistAdminRouted},
     { path: 'club', component: ClubPlistAdminRouted},
     { path: 'club/view/:id', component: ClubViewAdminRouted},
+    { path: 'club/edit/:id', component: ClubEditAdminRouted},
     { path: 'cuota', component: CuotaPlistAdminRouted},
     { path: 'cuota/equipo/:id_equipo', component: CuotaPlistAdminRouted},
     { path: 'cuota/view/:id', component: CuotaViewAdminRouted},
@@ -129,6 +132,7 @@ export const routes: Routes = [
     { path: 'pago/jugador/:id_jugador', component: PagoPlistComponent},
     { path: 'pago/view/:id', component: PagoViewAdminRouted},
     { path: 'pago/delete/:id', component: PagoDeleteAdminRouted},
+    { path: 'categoria/delete/:id', component: CategoriaDeleteAdminRouted},
     { path: 'puntuacion', component: PuntuacionPlistAdminRouted},
     { path: 'puntuacion/noticia/:id_noticia', component: PuntuacionPlistAdminRouted},
     { path: 'puntuacion/usuario/:id_usuario', component: PuntuacionPlistAdminRouted},
