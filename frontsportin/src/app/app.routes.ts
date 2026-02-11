@@ -70,6 +70,7 @@ import { CuotaEditAdminRouted } from './component/cuota/edit-admin-routed/cuota-
 import { JugadorDeleteAdminRouted } from './component/jugador/delete-admin-routed/jugador-delete';
 import { TipoarticuloDeleteAdminRouted } from './component/tipoarticulo/delete-admin-routed/delete-admin-routed';
 import { TemporadaPlist } from './component/temporada/plist-admin-routed/temporada-plist';
+import { ComentarioEditAdminRouted } from './component/comentario/edit-admin-routed/comentario-edit';
 
 
 export const routes: Routes = [
@@ -158,6 +159,7 @@ export const routes: Routes = [
     { path: 'comentario/usuario/:id_usuario', component: ComentarioPlistAdminRouted},
     { path: 'comentario/noticia/:id_noticia', component: ComentarioPlistAdminRouted},
     { path: 'comentario/view/:id', component: ComentarioViewRouted},
+    { path: 'comentario/edit/:id', component: ComentarioEditAdminRouted},
     { path: 'pago', component: PagoPlistComponent},
     { path: 'pago/cuota/:id_cuota', component: PagoPlistComponent},
     { path: 'pago/jugador/:id_jugador', component: PagoPlistComponent},
