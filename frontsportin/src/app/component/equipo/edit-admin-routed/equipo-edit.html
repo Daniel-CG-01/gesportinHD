@@ -59,6 +59,8 @@
                 id="categoria"
                 style="cursor: pointer;"
                 class="form-select"
+                [class.is-invalid]="id_categoria?.invalid && id_categoria?.touched"
+                [class.is-valid]="id_categoria?.valid && id_categoria?.touched"
                 formControlName="id_categoria"
               >
                 <!-- Se elimina opción 'Sin asignar' para que el select muestre por defecto la categoría existente -->
@@ -74,6 +76,8 @@
                 id="entrenador"
                 style="cursor: pointer;"
                 class="form-select"
+                [class.is-invalid]="id_entrenador?.invalid && id_entrenador?.touched"
+                [class.is-valid]="id_entrenador?.valid && id_entrenador?.touched"
                 formControlName="id_entrenador"
               >
                 <!-- Se elimina opción 'Sin asignar' para que el select muestre por defecto el entrenador existente -->

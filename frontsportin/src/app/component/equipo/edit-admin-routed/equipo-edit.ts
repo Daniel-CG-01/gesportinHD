@@ -147,6 +147,14 @@ export class EquipoEditAdminRouted implements OnInit {
     return this.equipoForm.get('nombre');
   }
 
+  get id_categoria() {
+    return this.equipoForm.get('id_categoria');
+  }
+
+  get id_entrenador() {
+    return this.equipoForm.get('id_entrenador');
+  }
+
   onSubmit(): void {
     if (this.equipoForm.invalid) {
       this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', {
