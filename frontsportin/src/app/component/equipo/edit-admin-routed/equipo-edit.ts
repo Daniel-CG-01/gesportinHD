@@ -5,6 +5,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EquipoService } from '../../../service/equipo';
+import { CategoriaService } from '../../../service/categoria';
+import { UsuarioService } from '../../../service/usuarioService';
+import { ICategoria } from '../../../model/categoria';
+import { IUsuario } from '../../../model/usuario';
 import { IEquipo } from '../../../model/equipo';
 
 @Component({
@@ -19,6 +23,8 @@ export class EquipoEditAdminRouted implements OnInit {
   private fb = inject(FormBuilder);
   private oEquipoService = inject(EquipoService);
   private snackBar = inject(MatSnackBar);
+  private oCategoriaService = inject(CategoriaService);
+  private oUsuarioService = inject(UsuarioService);
 
   equipoForm!: FormGroup;
   id_equipo = signal<number>(0);
@@ -28,6 +34,13 @@ export class EquipoEditAdminRouted implements OnInit {
   // Guardar ids de claves ajenas para reenviarlos en el update
   currentCategoriaId = signal<number | null>(null);
   currentEntrenadorId = signal<number | null>(null);
+  // Guardar nombres para mostrarlos en el formulario (solo lectura)
+  currentCategoriaName = signal<string | null>(null);
+  currentEntrenadorName = signal<string | null>(null);
+
+  // Listas para selects
+  categorias = signal<ICategoria[]>([]);
+  entrenadores = signal<IUsuario[]>([]);
 
   constructor() {}
 
@@ -51,12 +64,16 @@ export class EquipoEditAdminRouted implements OnInit {
     }
 
     this.loadEquipo();
+    this.loadCategorias();
+    this.loadEntrenadores();
   }
 
   private initForm(): void {
     this.equipoForm = this.fb.group({
       id: [{ value: 0, disabled: true }],
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],
+      id_categoria: [null],
+      id_entrenador: [null],
     });
   }
 
@@ -66,10 +83,17 @@ export class EquipoEditAdminRouted implements OnInit {
         this.equipoForm.patchValue({
           id: equipo.id,
           nombre: equipo.nombre,
+          id_categoria: equipo.categoria?.id ?? null,
+          id_entrenador: equipo.entrenador?.id ?? null,
         });
         // Guardar ids de categoria y entrenador para incluirlos en el update
         this.currentCategoriaId.set(equipo.categoria?.id ?? null);
         this.currentEntrenadorId.set(equipo.entrenador?.id ?? null);
+        // Guardar también los nombres para mostrarlos en campos de solo lectura
+        this.currentCategoriaName.set(equipo.categoria?.nombre ?? null);
+        this.currentEntrenadorName.set(
+          equipo.entrenador ? `${equipo.entrenador.nombre} ${equipo.entrenador.apellido1 ?? ''}`.trim() : null
+        );
         this.loading.set(false);
       },
       error: (err: HttpErrorResponse) => {
@@ -79,6 +103,44 @@ export class EquipoEditAdminRouted implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  private loadCategorias(): void {
+    // Cargar primeras 100 categorías para el select
+    const page = 0;
+    const rpp = 100;
+    this.oCategoriaService.getPage(page, rpp).subscribe({
+      next: (pageData: any) => {
+        this.categorias.set(pageData.content || []);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error cargando categorías', err);
+      },
+    });
+  }
+
+  private loadEntrenadores(): void {
+    // Cargar primeras 200 usuarios para el select (filtrado no aplicado para mantener simple)
+    const page = 0;
+    const rpp = 200;
+    this.oUsuarioService.getPage(page, rpp).subscribe({
+      next: (pageData: any) => {
+        this.entrenadores.set(pageData.content || []);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error cargando usuarios', err);
+      },
+    });
+  }
+
+  onCategoriaChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.currentCategoriaId.set(value && value !== 'null' ? Number(value) : null);
+  }
+
+  onEntrenadorChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.currentEntrenadorId.set(value && value !== 'null' ? Number(value) : null);
   }
 
   get nombre() {
@@ -101,11 +163,14 @@ export class EquipoEditAdminRouted implements OnInit {
     } as Partial<IEquipo>;
 
     // Incluir referencias a claves ajenas si existen para evitar errores en el backend
-    if (this.currentCategoriaId()) {
-      equipoData.categoria = { id: this.currentCategoriaId() };
+    const selectedCategoriaId = this.equipoForm.value.id_categoria ?? this.currentCategoriaId();
+    const selectedEntrenadorId = this.equipoForm.value.id_entrenador ?? this.currentEntrenadorId();
+
+    if (selectedCategoriaId) {
+      equipoData.categoria = { id: Number(selectedCategoriaId) };
     }
-    if (this.currentEntrenadorId()) {
-      equipoData.entrenador = { id: this.currentEntrenadorId() };
+    if (selectedEntrenadorId) {
+      equipoData.entrenador = { id: Number(selectedEntrenadorId) };
     }
 
     this.oEquipoService.update(equipoData).subscribe({
