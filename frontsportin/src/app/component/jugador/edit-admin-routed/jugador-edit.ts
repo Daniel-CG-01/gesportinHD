@@ -4,12 +4,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { JugadorService } from '../../../service/jugador-service';
 import { UsuarioService } from '../../../service/usuarioService';
 import { EquipoService } from '../../../service/equipo';
 import { IUsuario } from '../../../model/usuario';
 import { IJugador } from '../../../model/jugador';
 import { IEquipo } from '../../../model/equipo';
+import { UsuarioPlistAdminUnrouted } from '../../usuario/plist-admin-unrouted/usuario-plist-admin-unrouted';
+import { EquipoPlistAdminUnrouted } from '../../equipo/plist-admin-unrouted/equipo-plist-admin-unrouted';
 
 @Component({
   selector: 'app-edit-admin-routed',
@@ -26,20 +29,19 @@ export class JugadorEditAdminRouted implements OnInit {
   private oUsuarioService = inject(UsuarioService);
   private oEquipoService = inject(EquipoService);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   jugadorForm!: FormGroup;
   id_jugador = signal<number>(0);
   loading = signal(true);
   error = signal<string | null>(null);
   submitting = signal(false);
-  usuarios = signal<IUsuario[]>([]);
-  equipos = signal<IEquipo[]>([]);
   jugadorActual = signal<IJugador | null>(null);
+  selectedUsuario = signal<IUsuario | null>(null);
+  selectedEquipo = signal<IEquipo | null>(null);
 
   ngOnInit(): void {
     this.inicializarFormulario();
-    this.cargarUsuarios();
-    this.cargarEquipos();
 
     const idParam = this.route.snapshot.paramMap.get('id');
 
@@ -83,6 +85,17 @@ export class JugadorEditAdminRouted implements OnInit {
           id_usuario: jugador.usuario?.id || null,
           id_equipo: jugador.equipo?.id || null
         });
+
+        // Sincronizar detalles de relaciones (para mostrar en el edit)
+        const idUsuario = jugador.usuario?.id;
+        const idEquipo = jugador.equipo?.id;
+        if (typeof idUsuario === 'number' && idUsuario > 0) {
+          this.syncUsuario(idUsuario);
+        }
+        if (typeof idEquipo === 'number' && idEquipo > 0) {
+          this.syncEquipo(idEquipo);
+        }
+
         this.loading.set (false);
       },
       error: (err: HttpErrorResponse) => {
@@ -92,26 +105,75 @@ export class JugadorEditAdminRouted implements OnInit {
       }
     });
   }
-  cargarUsuarios(): void {
-      this.oUsuarioService.getPage(0, 100, 'username', 'asc', '', 0).subscribe({
-        next: (page) => {
-          this.usuarios.set  (page.content)
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('Error al cargar usuarios', err);
-          this.snackBar.open('Error al cargar los usuarios', 'Cerrar', { duration: 4000 });
-        }
-      });
-    }
 
-  cargarEquipos(): void {
-    this.oEquipoService.getPage(0, 100, 'nombre', 'asc').subscribe({
-      next: (page) => {
-        this.equipos.set(page.content);
+  private syncUsuario(idUsuario: number): void {
+    this.oUsuarioService.get(idUsuario).subscribe({
+      next: (usuario: IUsuario) => {
+        this.selectedUsuario.set(usuario);
       },
       error: (err: HttpErrorResponse) => {
-        console.error('Error al cargar equipos', err);
-        this.snackBar.open('Error al cargar los equipos', 'Cerrar', { duration: 4000 });
+        console.error('Error al sincronizar usuario:', err);
+        this.snackBar.open('Error al cargar el usuario seleccionado', 'Cerrar', { duration: 3000 });
+      },
+    });
+  }
+
+  private syncEquipo(idEquipo: number): void {
+    this.oEquipoService.get(idEquipo).subscribe({
+      next: (equipo: IEquipo) => {
+        this.selectedEquipo.set(equipo);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al sincronizar equipo:', err);
+        this.snackBar.open('Error al cargar el equipo seleccionado', 'Cerrar', { duration: 3000 });
+      },
+    });
+  }
+
+  openUsuarioFinderModal(): void {
+    const dialogRef = this.dialog.open(UsuarioPlistAdminUnrouted, {
+      height: '800px',
+      width: '1100px',
+      maxWidth: '95vw',
+      panelClass: 'usuario-dialog',
+      data: {
+        title: 'Aquí elegir usuario',
+        message: 'Plist finder para encontrar el usuario y asignarlo al jugador',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((usuario: IUsuario | null) => {
+      if (usuario) {
+        this.jugadorForm.patchValue({
+          id_usuario: usuario.id,
+        });
+        this.syncUsuario(usuario.id);
+        this.snackBar.open(`Usuario seleccionado: ${usuario.username}`, 'Cerrar', { duration: 3000 });
+      }
+    });
+  }
+
+  openEquipoFinderModal(): void {
+    const dialogRef = this.dialog.open(EquipoPlistAdminUnrouted, {
+      height: '800px',
+      width: '1100px',
+      maxWidth: '95vw',
+      panelClass: 'equipo-dialog',
+      data: {
+        title: 'Aquí elegir equipo',
+        message: 'Plist finder para encontrar el equipo y asignarlo al jugador',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((equipo: IEquipo | null) => {
+      if (equipo) {
+        this.jugadorForm.patchValue({
+          id_equipo: equipo.id,
+        });
+        if (typeof equipo.id === 'number') {
+          this.syncEquipo(equipo.id);
+        }
+        this.snackBar.open(`Equipo seleccionado: ${equipo.nombre}`, 'Cerrar', { duration: 3000 });
       }
     });
   }
