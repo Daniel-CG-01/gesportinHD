@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +11,6 @@ import { IUsuario } from '../../../model/usuario';
 import { ArticuloService } from '../../../service/articulo';
 import { ComentarioartService } from '../../../service/comentarioart';
 import { UsuarioService } from '../../../service/usuarioService';
-import { ArticuloPlistAdminUnrouted } from '../../articulo/plist-admin-unrouted/articulo-plist-admin-unrouted';
 import { UsuarioPlistAdminUnrouted } from '../../usuario/plist-admin-unrouted/usuario-plist-admin-unrouted';
 
 @Component({
@@ -40,6 +39,21 @@ export class ComentarioartEditAdminRouted implements OnInit {
   displayIdArticulo = signal<number | null>(null);
   selectedUsuario = signal<IUsuario | null>(null);
   displayIdUsuario = signal<number | null>(null);
+  articuloSearch = signal<string>('');
+  filteredArticulos = computed(() => {
+    const term = this.articuloSearch().toLowerCase().trim();
+    const items = this.articulos();
+    if (!term) {
+      return items;
+    }
+    return items.filter((articulo) => {
+      const descripcion = (articulo.descripcion || '').toLowerCase();
+      const idMatch = String(articulo.id).includes(term);
+      return descripcion.includes(term) || idMatch;
+    });
+  });
+
+  @ViewChild('articuloDialog') articuloDialog?: TemplateRef<any>;
 
   constructor(private dialog: MatDialog) {}
 
@@ -75,21 +89,21 @@ export class ComentarioartEditAdminRouted implements OnInit {
       id_usuario: [null, Validators.required],
     });
 
-    this.comentarioartForm.get('id_articulo')?.valueChanges.subscribe((id) => {
-      if (id) {
-        this.syncArticulo(Number(id));
-      } else {
-        this.selectedArticulo.set(null);
-        this.displayIdArticulo.set(null);
-      }
-    });
-
     this.comentarioartForm.get('id_usuario')?.valueChanges.subscribe((id) => {
       if (id) {
         this.syncUsuario(Number(id));
       } else {
         this.selectedUsuario.set(null);
         this.displayIdUsuario.set(null);
+      }
+    });
+
+    this.comentarioartForm.get('id_articulo')?.valueChanges.subscribe((id) => {
+      if (id) {
+        this.syncArticulo(Number(id));
+      } else {
+        this.selectedArticulo.set(null);
+        this.displayIdArticulo.set(null);
       }
     });
   }
@@ -166,16 +180,16 @@ export class ComentarioartEditAdminRouted implements OnInit {
     return this.comentarioartForm.get('id_usuario');
   }
 
-  private syncArticulo(idArticulo: number): void {
-    this.displayIdArticulo.set(idArticulo);
-    const articulo = this.articulos().find((item) => item.id === idArticulo) ?? null;
-    this.selectedArticulo.set(articulo);
-  }
-
   private syncUsuario(idUsuario: number): void {
     this.displayIdUsuario.set(idUsuario);
     const usuario = this.usuarios().find((item) => item.id === idUsuario) ?? null;
     this.selectedUsuario.set(usuario);
+  }
+
+  private syncArticulo(idArticulo: number): void {
+    this.displayIdArticulo.set(idArticulo);
+    const articulo = this.articulos().find((item) => item.id === idArticulo) ?? null;
+    this.selectedArticulo.set(articulo);
   }
 
   onSubmit(): void {
@@ -215,33 +229,9 @@ export class ComentarioartEditAdminRouted implements OnInit {
     });
   }
 
-  openArticuloFinderModal(): void {
-    const dialogRef = this.dialog.open(ArticuloPlistAdminUnrouted, {
-      height: '800px',
-      width: '1100px',
-      maxWidth: '95vw',
-      panelClass: 'articulo-dialog',
-      data: {
-        title: 'Aqui elegir articulo',
-        message: 'Plist finder para encontrar el articulo y asignarlo al comentario',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((articulo: IArticulo | null) => {
-      if (articulo) {
-        this.comentarioartForm.patchValue({
-          id_articulo: articulo.id,
-        });
-        this.syncArticulo(articulo.id);
-        this.snackBar.open(`Articulo seleccionado: ${articulo.descripcion}`, 'Cerrar', {
-          duration: 3000,
-        });
-      }
-    });
-  }
-
   openUsuarioFinderModal(): void {
     const dialogRef = this.dialog.open(UsuarioPlistAdminUnrouted, {
+
       height: '800px',
       width: '1100px',
       maxWidth: '95vw',
@@ -268,6 +258,34 @@ export class ComentarioartEditAdminRouted implements OnInit {
           },
         );
       }
+    });
+  }
+
+  openArticuloFinderModal(): void {
+    if (!this.articuloDialog) {
+      return;
+    }
+
+    this.dialog.open(this.articuloDialog, {
+      height: '800px',
+      width: '1100px',
+      maxWidth: '95vw',
+      panelClass: 'articulo-dialog',
+    });
+  }
+
+  onArticuloSearch(value: string): void {
+    this.articuloSearch.set(value);
+  }
+
+  selectArticulo(articulo: IArticulo, dialogRef: any): void {
+    this.comentarioartForm.patchValue({
+      id_articulo: articulo.id,
+    });
+    this.syncArticulo(articulo.id);
+    dialogRef?.close();
+    this.snackBar.open(`Articulo seleccionado: ${articulo.descripcion}`, 'Cerrar', {
+      duration: 3000,
     });
   }
 }
