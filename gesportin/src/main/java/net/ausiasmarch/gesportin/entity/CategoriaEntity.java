@@ -44,6 +44,6 @@ public class CategoriaEntity {
     private List<EquipoEntity> equipos;
 
     public int getEquipos() {
-        return equipos.size();
+        return equipos != null ? equipos.size() : 0;
     }
 }

@@ -48,6 +48,6 @@ public class FacturaEntity {
     private List<CompraEntity> compras;
 
     public int getCompras()  {
-        return compras.size();
+        return compras != null ? compras.size() : 0;
     }
 }

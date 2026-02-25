@@ -104,30 +104,30 @@ public class UsuarioEntity {
     private List<JugadorEntity> jugadores;
 
     public int getComentarios() {
-        return comentarios.size();
+        return comentarios != null ? comentarios.size() : 0;
     }
 
     public int getPuntuaciones() {
-        return puntuaciones.size();
+        return puntuaciones != null ? puntuaciones.size() : 0;
     }
 
     public int getComentarioarts() {
-        return comentarioarts.size();
+        return comentarioarts != null ? comentarioarts.size() : 0;
     }
 
     public int getCarritos() {
-        return carritos.size();
+        return carritos != null ? carritos.size() : 0;
     }
 
     public int getFacturas() {
-        return facturas.size();
+        return facturas != null ? facturas.size() : 0;
     }
 
     public int getEquiposentrenados() {
-        return equiposentrenados.size();
+        return equiposentrenados != null ? equiposentrenados.size() : 0;
     }
 
     public int getJugadores() {
-        return jugadores.size(); // OJO siempre 1 porque es 1 a 1 
+        return jugadores != null ? jugadores.size() : 0;
     }
 }

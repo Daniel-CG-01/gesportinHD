@@ -33,6 +33,6 @@ public class TipousuarioEntity {
     private java.util.List<UsuarioEntity> usuarios;
 
     public int getUsuarios() {
-        return usuarios.size();
+        return usuarios != null ? usuarios.size() : 0;
     }
 }

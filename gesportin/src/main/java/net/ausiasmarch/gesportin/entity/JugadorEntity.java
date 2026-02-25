@@ -62,6 +62,6 @@ public class JugadorEntity {
     private List<PagoEntity> pagos;
 
     public int getPagos() {
-        return pagos.size();
+        return pagos != null ? pagos.size() : 0;
     }
 }

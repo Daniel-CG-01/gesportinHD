@@ -67,21 +67,21 @@ public class ClubEntity {
 
    
     public int getTemporadas() {
-        return temporadas.size();
+        return temporadas != null ? temporadas.size() : 0;
     }
 
    
     public int getNoticias() {
-        return noticias.size();
+        return noticias != null ? noticias.size() : 0;
     }
 
    
     public int getTipoarticulos() {
-        return tipoarticulos.size();
+        return tipoarticulos != null ? tipoarticulos.size() : 0;
     }
 
    
     public int getUsuarios() {
-        return usuarios.size();
+        return usuarios != null ? usuarios.size() : 0;
     }
 }

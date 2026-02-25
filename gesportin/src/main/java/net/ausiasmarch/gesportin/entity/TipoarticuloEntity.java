@@ -45,6 +45,6 @@ public class TipoarticuloEntity {
     private List<ArticuloEntity> articulos;
 
     public int getArticulos(){
-        return articulos.size();
+        return articulos != null ? articulos.size() : 0;
     }
 }

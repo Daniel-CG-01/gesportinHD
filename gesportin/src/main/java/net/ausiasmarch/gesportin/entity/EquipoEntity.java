@@ -58,15 +58,15 @@ public class EquipoEntity {
     private List<LigaEntity> ligas;
 
     public int getJugadores() {
-        return jugadores.size();
+        return jugadores != null ? jugadores.size() : 0;
     }
 
     public int getCuotas() {
-        return cuotas.size();
+        return cuotas != null ? cuotas.size() : 0;
     }
 
     public int getLigas() {
-        return ligas.size();
+        return ligas != null ? ligas.size() : 0;
     }
 
 }

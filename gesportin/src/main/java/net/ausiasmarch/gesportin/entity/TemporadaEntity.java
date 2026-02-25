@@ -42,7 +42,7 @@ public class TemporadaEntity {
     private java.util.List<CategoriaEntity> categorias;
 
     public int getCategorias() {
-        return categorias.size();
+        return categorias != null ? categorias.size() : 0;
     }
 
 }

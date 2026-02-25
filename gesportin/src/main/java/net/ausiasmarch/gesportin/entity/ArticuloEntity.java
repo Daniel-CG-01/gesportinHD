@@ -48,7 +48,6 @@ public class ArticuloEntity {
     private TipoarticuloEntity tipoarticulo;
 
     // https://www.baeldung.com/lombok-omit-getter-setter    
-    
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "articulo", fetch = FetchType.LAZY)
     private java.util.List<ComentarioartEntity> comentarioarts;
@@ -61,19 +60,18 @@ public class ArticuloEntity {
     @OneToMany(mappedBy = "articulo", fetch = FetchType.LAZY)
     private java.util.List<CarritoEntity> carritos;
 
-    
     public int getComentarioarts() {
-        return comentarioarts.size();
+        return comentarioarts != null ? comentarioarts.size() : 0;
     }
 
     public int getCompras() {
-        return compras.size();
+        return compras != null ? compras.size() : 0;
     }
 
     public int getCarritos() {
-        return carritos.size();
+        return carritos != null ? carritos.size() : 0;
     }
-    
+
 
     /*
 
@@ -304,8 +302,5 @@ Y te digo **qué opción usar exactamente en tu caso** 💡
 
     
     
-    */
-
-
-
+     */
 }

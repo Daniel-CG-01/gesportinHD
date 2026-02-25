@@ -3,7 +3,7 @@ package net.ausiasmarch.gesportin.entity;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
- 
+
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,9 +17,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,24 +33,24 @@ public class NoticiaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @NotNull
     @Size(min = 3, max = 1024)
     private String titulo;
-    
+
     @NotNull
     @Size(min = 3)
     private String contenido;
-    
+
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime fecha;
-    
+
     @Nullable
     @Lob
     private byte[] imagen;
-    
-    @NotNull    
+
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_club")
     private ClubEntity club;
@@ -63,13 +63,11 @@ public class NoticiaEntity {
     @OneToMany(mappedBy = "noticia", fetch = FetchType.LAZY)
     private java.util.List<PuntuacionEntity> puntuaciones;
 
-
     public int getComentarios() {
-        return comentarios.size();
-        }
+        return comentarios != null ? comentarios.size() : 0;
+    }
 
     public int getPuntuaciones() {
-        return puntuaciones.size();
+        return puntuaciones != null ? puntuaciones.size() : 0;
     }
 }
-

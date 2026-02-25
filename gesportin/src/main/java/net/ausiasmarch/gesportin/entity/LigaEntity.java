@@ -43,6 +43,6 @@ public class LigaEntity {
     private java.util.List<PartidoEntity> partidos;
 
     public int getPartidos() {
-        return partidos.size();
+        return partidos != null ? partidos.size() : 0;
     }
 }
