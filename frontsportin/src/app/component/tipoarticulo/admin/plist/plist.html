@@ -122,7 +122,11 @@
                             {{ oTipoarticulo.articulos || 0 }}
                           } @else {
                             @if (!oTipoarticulo.articulos || oTipoarticulo.articulos === 0) {
-                              <i class="bi bi-ban" aria-hidden="true"></i>
+                              @if (strRole === 'teamadmin') {
+                                <a [routerLink]="['/articulo/teamadmin/new']" [queryParams]="{ id_tipoarticulo: oTipoarticulo.id }" class="text-warning" title="Crear primer artículo"><i class="bi bi-plus-circle" aria-hidden="true"></i></a>
+                              } @else {
+                                <i class="bi bi-ban" aria-hidden="true"></i>
+                              }
                             } @else {
                               <a [routerLink]="[session.isClubAdmin() ? '/articulo/teamadmin/tipoarticulo' : '/articulo/tipoarticulo', oTipoarticulo.id]">{{ oTipoarticulo.articulos }}</a>
                             }

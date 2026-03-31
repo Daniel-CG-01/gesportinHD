@@ -148,7 +148,11 @@
                             {{ oCuota.pagos || 0 }}
                           } @else {
                             @if (!oCuota.pagos || oCuota.pagos === 0) {
-                              <i class="bi bi-ban" aria-hidden="true"></i>
+                              @if (strRole === 'teamadmin') {
+                                <a [routerLink]="['/pago/teamadmin/new']" [queryParams]="{ id_cuota: oCuota.id }" class="text-warning" title="Crear primer pago"><i class="bi bi-plus-circle" aria-hidden="true"></i></a>
+                              } @else {
+                                <i class="bi bi-ban" aria-hidden="true"></i>
+                              }
                             } @else {
                               <a [routerLink]="[session.isClubAdmin() ? '/pago/teamadmin/cuota' : '/pago/cuota', oCuota.id]">{{ oCuota.pagos }}</a>
                             }

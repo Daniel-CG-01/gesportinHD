@@ -64,9 +64,14 @@
             </p>
             <div class="d-flex flex-wrap gap-2 align-items-center">
               @if (oTemporada.categorias === 0) {
-                <span class="badge bg-secondary opacity-75">
-                  <i class="bi bi-x-circle me-1"></i>0 categorías
-                </span>
+                <a
+                  [routerLink]="['/categoria/teamadmin/new']"
+                  [queryParams]="{ id_temporada: oTemporada.id }"
+                  class="badge bg-warning text-dark text-decoration-none"
+                  title="Crear primera categoría"
+                >
+                  <i class="bi bi-plus-circle me-1"></i>0 categorías
+                </a>
               } @else {
                 <a
                   [routerLink]="['/categoria/teamadmin/temporada', oTemporada.id]"

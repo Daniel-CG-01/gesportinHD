@@ -356,6 +356,104 @@ edición/borrado por entidad (ver Sección 10).
   se ignoran al no haber tabla).
 - Regla mínima obligatoria: `:host { display: block; }`.
 
+### 4.11 Filosofía «0 = puerta de entrada a creación»
+
+El perfil teamadmin **no dispone de menú lateral** y solo puede navegar mediante breadcrumbs
+y los enlaces de las tarjetas. Para garantizar que el club admin nunca quede bloqueado ante
+entidades sin registros hijos, se aplica la siguiente regla:
+
+> **Cuando un contador de entidad hija vale 0, el badge gris estático se convierte en un
+> enlace de creación amarillo** que lleva directamente al formulario de alta fijando el FK
+> del padre vía `queryParam`.
+
+#### Regla de estilos
+
+| Estado del contador | Clase CSS del badge | Icono | Comportamiento |
+|---|---|---|---|
+| `> 0` registros | `badge bg-primary text-decoration-none` | icono de la entidad | Navega al listado filtrado de hijos |
+| `= 0` con creación permitida | `badge bg-warning text-dark text-decoration-none` | `bi-plus-circle` | Navega al formulario de alta con FK precargado |
+| `= 0` solo lectura (contenido de usuario) | `badge bg-secondary opacity-75` | `bi-x-circle` | No interactivo — sin cambio |
+
+#### Mapeado completo padre → hijo (teamadmin)
+
+| Plist padre | Contador → entidad hija | Ruta de creación | queryParam |
+|---|---|---|---|
+| Club (`/club/teamadmin`) | `temporadas` | `/temporada/teamadmin/new` | — (club implícito en sesión) |
+| Club (`/club/teamadmin`) | `noticias` | `/noticia/teamadmin/new` | — |
+| Club (`/club/teamadmin`) | `tipoarticulos` | `/tipoarticulo/teamadmin/new` | — |
+| Club (`/club/teamadmin`) | `usuarios` | `/usuario/teamadmin/new` | — |
+| Temporada (`/temporada/teamadmin`) | `categorias` | `/categoria/teamadmin/new` | `id_temporada` |
+| Categoría (`/categoria/teamadmin`) | `equipos` | `/equipo/teamadmin/new` | `id_categoria` |
+| Equipo (`/equipo/teamadmin`) | `jugadores` | `/jugador/teamadmin/new` | `id_equipo` |
+| Equipo (`/equipo/teamadmin`) | `cuotas` | `/cuota/teamadmin/new` | `id_equipo` |
+| Equipo (`/equipo/teamadmin`) | `ligas` | `/liga/teamadmin/new` | `id_equipo` |
+| Liga (unrouted teamadmin) | `partidos` | `/partido/teamadmin/new` | `id_liga` |
+| Cuota (admin plist, `strRole='teamadmin'`) | `pagos` | `/pago/teamadmin/new` | `id_cuota` |
+| Tipo artículo (admin plist, `strRole='teamadmin'`) | `articulos` | `/articulo/teamadmin/new` | `id_tipoarticulo` |
+
+#### Entidades NO convertidas (contenido generado por usuarios finales)
+
+Los siguientes contadores **permanecen como badge gris estático** porque los registros hijos
+los crea el usuario final (tipousuario=3), no el club admin:
+
+- Noticia → `comentarios`, `puntuaciones`
+- Artículo → `comentarioarts`, `compras`, `carritos`
+
+#### Implementación en plists standalone teamadmin (badge cards)
+
+```html
+@if (oEntidad.contador === 0) {
+  <a
+    [routerLink]="['/<entidadHija>/teamadmin/new']"
+    [queryParams]="{ id_<entidadPadre>: oEntidad.id }"
+    class="badge bg-warning text-dark text-decoration-none"
+    title="Crear primera/primer <entidadHija>"
+  >
+    <i class="bi bi-plus-circle me-1"></i>0 <nombreHija>
+  </a>
+} @else {
+  <a
+    [routerLink]="['/<entidadHija>/teamadmin/<entidadPadre>', oEntidad.id]"
+    class="badge bg-primary text-decoration-none"
+    title="Ver <nombreHija>"
+  >
+    <i class="bi bi-<icono> me-1"></i>{{ oEntidad.contador }} <nombreHija>
+  </a>
+}
+```
+
+**Nota para el plist raíz Club**: Las rutas de creación desde el plist de club **no incluyen
+queryParam de club** porque el backend asigna automáticamente el club desde la sesión del
+usuario autenticado (idéntico al comportamiento del botón «Nueva Temporada» existente).
+
+#### Implementación en plists admin compartidos (tabla, con `strRole`)
+
+Los plists admin que también usa el club admin via `strRole="teamadmin"` usan una condición
+doble: solo muestran el enlace de creación cuando `strRole === 'teamadmin'` y no están en
+modo diálogo:
+
+```html
+@if (!oCuota.pagos || oCuota.pagos === 0) {
+  @if (strRole === 'teamadmin') {
+    <a [routerLink]="['/pago/teamadmin/new']"
+       [queryParams]="{ id_cuota: oCuota.id }"
+       class="text-warning"
+       title="Crear primer pago">
+      <i class="bi bi-plus-circle" aria-hidden="true"></i>
+    </a>
+  } @else {
+    <i class="bi bi-ban" aria-hidden="true"></i>
+  }
+} @else {
+  <a [routerLink]="[session.isClubAdmin() ? '/pago/teamadmin/cuota' : '/pago/cuota', oCuota.id]">
+    {{ oCuota.pagos }}
+  </a>
+}
+```
+
+Esto garantiza que el administrador global (tipousuario=1) sigue viendo el icono `bi-ban`
+sin cambios en su experiencia.
+
 ---
 
 ## 5. Diseño del componente `detail` (detalle de solo lectura)

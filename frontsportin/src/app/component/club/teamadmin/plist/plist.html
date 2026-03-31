@@ -70,9 +70,13 @@
             <!-- Contadores con enlaces -->
             <div class="d-flex flex-wrap gap-2">
               @if (oClub.temporadas === 0) {
-                <span class="badge bg-secondary opacity-75">
-                  <i class="bi bi-calendar me-1"></i>0 temporadas
-                </span>
+                <a
+                  [routerLink]="['/temporada/teamadmin/new']"
+                  class="badge bg-warning text-dark text-decoration-none"
+                  title="Crear primera temporada"
+                >
+                  <i class="bi bi-plus-circle me-1"></i>0 temporadas
+                </a>
               } @else {
                 <a
                   [routerLink]="['/temporada/teamadmin/club', oClub.id]"
@@ -83,9 +87,13 @@
               }
 
               @if (oClub.noticias === 0) {
-                <span class="badge bg-secondary opacity-75">
-                  <i class="bi bi-newspaper me-1"></i>0 noticias
-                </span>
+                <a
+                  [routerLink]="['/noticia/teamadmin/new']"
+                  class="badge bg-warning text-dark text-decoration-none"
+                  title="Crear primera noticia"
+                >
+                  <i class="bi bi-plus-circle me-1"></i>0 noticias
+                </a>
               } @else {
                 <a
                   [routerLink]="['/noticia/teamadmin/club', oClub.id]"
@@ -96,9 +104,13 @@
               }
 
               @if (oClub.tipoarticulos === 0) {
-                <span class="badge bg-secondary opacity-75">
-                  <i class="bi bi-bookmark-fill me-1"></i>0 tipos art.
-                </span>
+                <a
+                  [routerLink]="['/tipoarticulo/teamadmin/new']"
+                  class="badge bg-warning text-dark text-decoration-none"
+                  title="Crear primer tipo de artículo"
+                >
+                  <i class="bi bi-plus-circle me-1"></i>0 tipos art.
+                </a>
               } @else {
                 <a
                   [routerLink]="['/tipoarticulo/teamadmin/club', oClub.id]"
@@ -109,9 +121,13 @@
               }
 
               @if (oClub.usuarios === 0) {
-                <span class="badge bg-secondary opacity-75">
-                  <i class="bi bi-people me-1"></i>0 usuarios
-                </span>
+                <a
+                  [routerLink]="['/usuario/teamadmin/new']"
+                  class="badge bg-warning text-dark text-decoration-none"
+                  title="Crear primer usuario"
+                >
+                  <i class="bi bi-plus-circle me-1"></i>0 usuarios
+                </a>
               } @else {
                 <a
                   [routerLink]="['/usuario/teamadmin/club', oClub.id]"

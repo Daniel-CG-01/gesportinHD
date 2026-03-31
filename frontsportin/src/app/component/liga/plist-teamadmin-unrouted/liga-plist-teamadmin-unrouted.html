@@ -63,8 +63,27 @@
                 <a [routerLink]="['/equipo/view', oLiga.equipo.id]">{{ oLiga.equipo.nombre || 'Equipo ' + oLiga.equipo.id }}</a>
               } @else { <span class="text-muted">Sin equipo</span> }
             </p>
-            <p><strong>Partidos:</strong> {{ oLiga.partidos }}</p>
             <p><strong>Nombre:</strong> {{ oLiga.nombre }}</p>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              @if (!oLiga.partidos || oLiga.partidos === 0) {
+                <a
+                  [routerLink]="['/partido/teamadmin/new']"
+                  [queryParams]="{ id_liga: oLiga.id }"
+                  class="badge bg-warning text-dark text-decoration-none"
+                  title="Crear primer partido"
+                >
+                  <i class="bi bi-plus-circle me-1"></i>0 partidos
+                </a>
+              } @else {
+                <a
+                  [routerLink]="['/partido/teamadmin/liga', oLiga.id]"
+                  class="badge bg-primary text-decoration-none"
+                  title="Ver partidos"
+                >
+                  <i class="bi bi-flag-fill me-1"></i>{{ oLiga.partidos }} partidos
+                </a>
+              }
+            </div>
           </div>
           <div class="card-footer d-flex justify-content-between">
             <a [routerLink]="['/liga/view', oLiga.id]" class="btn btn-outline-secondary btn-sm">Ver</a>
