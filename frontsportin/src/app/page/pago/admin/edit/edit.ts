@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { PagoService } from '../../../../service/pago';
 import { IPago } from '../../../../model/pago';
 import { PagoAdminForm } from '../../../../component/pago/admin/form/form';
@@ -16,7 +16,7 @@ export class PagoAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private pagoService = inject(PagoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_pago = signal<number>(0);
   loading = signal(true);
@@ -48,7 +48,7 @@ export class PagoAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando el pago');
-        this.snackBar.open('Error cargando el pago', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el pago');
         console.error(err);
         this.loading.set(false);
       },

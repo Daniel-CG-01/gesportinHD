@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { PartidoService } from '../../../../service/partido';
 import { LigaService } from '../../../../service/liga';
@@ -27,7 +27,7 @@ export class PartidoTeamadminForm implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oPartidoService = inject(PartidoService);
   private oLigaService = inject(LigaService);
   private modalService = inject(ModalService);
@@ -147,14 +147,14 @@ export class PartidoTeamadminForm implements OnInit {
       if (liga?.id != null) {
         this.partidoForm.patchValue({ id_liga: liga.id });
         this.selectedLiga.set(liga);
-        this.snackBar.open(`Liga seleccionada: ${liga.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Liga seleccionada: ${liga.nombre}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.partidoForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -171,13 +171,13 @@ export class PartidoTeamadminForm implements OnInit {
       partidoData.id = this.id();
       this.oPartidoService.update(partidoData).subscribe({
         next: () => {
-          this.snackBar.open('Partido actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Partido actualizado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el partido');
-          this.snackBar.open('Error actualizando el partido', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el partido');
           console.error(err);
           this.submitting.set(false);
         },
@@ -185,13 +185,13 @@ export class PartidoTeamadminForm implements OnInit {
     } else {
       this.oPartidoService.create(partidoData).subscribe({
         next: () => {
-          this.snackBar.open('Partido creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Partido creado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el partido');
-          this.snackBar.open('Error creando el partido', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el partido');
           console.error(err);
           this.submitting.set(false);
         },

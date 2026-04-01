@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal } from '
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { toIsoDateTime } from '../../../../utils/date-utils';
 import { ClubService } from '../../../../service/club';
 import { IClub } from '../../../../model/club';
@@ -20,7 +20,7 @@ export class ClubAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private clubService = inject(ClubService);
 
   clubForm!: FormGroup;
@@ -73,7 +73,7 @@ export class ClubAdminForm implements OnInit {
 
     if (this.clubForm.invalid) {
       this.error.set('Por favor, complete todos los campos correctamente');
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.info('Por favor, complete todos los campos correctamente');
       this.clubForm.markAllAsTouched();
       return;
     }
@@ -110,13 +110,13 @@ export class ClubAdminForm implements OnInit {
   private saveCreate(clubData: any): void {
     this.clubService.create(clubData).subscribe({
       next: (id: number) => {
-        this.snackBar.open('Club creado exitosamente', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Club creado exitosamente');
         this.submitting.set(false);
         this.formSuccess.emit();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error creando el club');
-        this.snackBar.open('Error creando el club', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error creando el club');
         console.error(err);
         this.submitting.set(false);
       },
@@ -126,13 +126,13 @@ export class ClubAdminForm implements OnInit {
   private saveUpdate(clubData: any): void {
     this.clubService.update(clubData).subscribe({
       next: (id: number) => {
-        this.snackBar.open('Club actualizado exitosamente', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Club actualizado exitosamente');
         this.submitting.set(false);
         this.formSuccess.emit();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error actualizando el club');
-        this.snackBar.open('Error actualizando el club', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error actualizando el club');
         console.error(err);
         this.submitting.set(false);
       },

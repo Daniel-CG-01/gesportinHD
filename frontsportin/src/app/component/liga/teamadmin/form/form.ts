@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { LigaService } from '../../../../service/liga';
 import { EquipoService } from '../../../../service/equipo';
@@ -27,7 +27,7 @@ export class LigaTeamadminForm implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private modalService = inject(ModalService);
   private ligaService = inject(LigaService);
   private equipoService = inject(EquipoService);
@@ -90,7 +90,7 @@ export class LigaTeamadminForm implements OnInit {
           next: (page) => this.equipos.set(page.content),
           error: (err: HttpErrorResponse) => {
             console.error(err);
-            this.snackBar.open('Error cargando equipos del club', 'Cerrar', { duration: 3000 });
+            this.notificacion.success('Error cargando equipos del club');
           },
         });
       return;
@@ -102,7 +102,7 @@ export class LigaTeamadminForm implements OnInit {
         next: (page) => this.equipos.set(page.content),
         error: (err: HttpErrorResponse) => {
           console.error(err);
-          this.snackBar.open('Error cargando equipos', 'Cerrar', { duration: 3000 });
+          this.notificacion.success('Error cargando equipos');
         },
       });
   }
@@ -172,7 +172,7 @@ export class LigaTeamadminForm implements OnInit {
       if (equipo && equipo.id != null) {
         this.ligaForm.patchValue({ id_equipo: equipo.id });
         this.syncEquipo(equipo.id);
-        this.snackBar.open(`Equipo seleccionado: ${equipo.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Equipo seleccionado: ${equipo.nombre}`);
       }
     });
   }
@@ -187,7 +187,7 @@ export class LigaTeamadminForm implements OnInit {
 
   onSubmit(): void {
     if (this.ligaForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       this.ligaForm.markAllAsTouched();
       return;
     }
@@ -203,12 +203,12 @@ export class LigaTeamadminForm implements OnInit {
       ligaData.id = this.id();
       this.ligaService.update(ligaData).subscribe({
         next: () => {
-          this.snackBar.open('Liga actualizada', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Liga actualizada');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBar.open('Error actualizando la liga', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando la liga');
           console.error(err);
           this.submitting.set(false);
         },
@@ -216,12 +216,12 @@ export class LigaTeamadminForm implements OnInit {
     } else {
       this.ligaService.create(ligaData).subscribe({
         next: () => {
-          this.snackBar.open('Liga creada', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Liga creada');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBar.open('Error creando la liga', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando la liga');
           console.error(err);
           this.submitting.set(false);
         },

@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PartidoService } from '../../../../service/partido';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { PartidoTeamadminDetail } from '../../../../component/partido/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class PartidoTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private partidoService = inject(PartidoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_partido = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class PartidoTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.partidoService.delete(this.id_partido()).subscribe({
       next: () => {
-        this.snackBar.open('Partido eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Partido eliminado/a');
         this.router.navigate(['/partido/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

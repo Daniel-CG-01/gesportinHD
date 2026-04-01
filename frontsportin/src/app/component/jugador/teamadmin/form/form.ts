@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { JugadorService } from '../../../../service/jugador-service';
 import { EquipoService } from '../../../../service/equipo';
@@ -30,7 +30,7 @@ export class JugadorTeamadminForm implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oJugadorService = inject(JugadorService);
   private oEquipoService = inject(EquipoService);
   private oUsuarioService = inject(UsuarioService);
@@ -162,7 +162,7 @@ export class JugadorTeamadminForm implements OnInit {
       if (equipo?.id != null) {
         this.jugadorForm.patchValue({ id_equipo: equipo.id });
         this.selectedEquipo.set(equipo);
-        this.snackBar.open(`Equipo seleccionado: ${equipo.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Equipo seleccionado: ${equipo.nombre}`);
       }
     });
   }
@@ -177,14 +177,14 @@ export class JugadorTeamadminForm implements OnInit {
       if (usuario?.id != null) {
         this.jugadorForm.patchValue({ id_usuario: usuario.id });
         this.selectedUsuario.set(usuario);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.jugadorForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -202,13 +202,13 @@ export class JugadorTeamadminForm implements OnInit {
       jugadorData.id = this.id();
       this.oJugadorService.update(jugadorData).subscribe({
         next: () => {
-          this.snackBar.open('Jugador actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Jugador actualizado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el jugador');
-          this.snackBar.open('Error actualizando el jugador', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el jugador');
           console.error(err);
           this.submitting.set(false);
         },
@@ -216,13 +216,13 @@ export class JugadorTeamadminForm implements OnInit {
     } else {
       this.oJugadorService.create(jugadorData).subscribe({
         next: () => {
-          this.snackBar.open('Jugador creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Jugador creado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el jugador');
-          this.snackBar.open('Error creando el jugador', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el jugador');
           console.error(err);
           this.submitting.set(false);
         },

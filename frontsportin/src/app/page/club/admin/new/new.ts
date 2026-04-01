@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ClubAdminForm } from '../../../../component/club/admin/form/form';
 
 @Component({
@@ -12,7 +12,7 @@ import { ClubAdminForm } from '../../../../component/club/admin/form/form';
 })
 export class ClubAdminNewPage {
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   error = signal<string | null>(null);
 

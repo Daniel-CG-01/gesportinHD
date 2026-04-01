@@ -17,7 +17,7 @@ export class ClubAdminDetail implements OnInit {
 
   private oClubService = inject(ClubService);
   session = inject(SessionService);
-  //private snackBar = inject(MatSnackBar);
+  //private notificacion = inject(NotificacionService);
 
   oClub = signal<IClub | null>(null);
   loading = signal(true);
@@ -36,7 +36,7 @@ export class ClubAdminDetail implements OnInit {
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando el club');
         this.loading.set(false);
-        //this.snackBar.open('Error cargando el club', 'Cerrar', { duration: 4000 });
+        //this.notificacion.error('Error cargando el club');
         console.error(err);
       },
     });

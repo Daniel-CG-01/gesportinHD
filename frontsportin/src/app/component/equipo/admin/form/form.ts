@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { EquipoService } from '../../../../service/equipo';
 import { CategoriaService } from '../../../../service/categoria';
@@ -27,7 +27,7 @@ export class EquipoAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oEquipoService = inject(EquipoService);
   private oCategoriaService = inject(CategoriaService);
   private oUsuarioService = inject(UsuarioService);
@@ -98,7 +98,7 @@ export class EquipoAdminForm implements OnInit {
       error: (err: HttpErrorResponse) => {
         this.selectedCategoria.set(null);
         console.error('Error al sincronizar categoría:', err);
-        this.snackBar.open('Error al cargar la categoría seleccionada', 'Cerrar', { duration: 3000 });
+        this.notificacion.success('Error al cargar la categoría seleccionada');
       },
     });
   }
@@ -116,7 +116,7 @@ export class EquipoAdminForm implements OnInit {
       error: (err: HttpErrorResponse) => {
         this.selectedEntrenador.set(null);
         console.error('Error al sincronizar entrenador:', err);
-        this.snackBar.open('Error al cargar el entrenador seleccionado', 'Cerrar', { duration: 3000 });
+        this.notificacion.success('Error al cargar el entrenador seleccionado');
       },
     });
   }
@@ -130,9 +130,7 @@ export class EquipoAdminForm implements OnInit {
           id_categoria: categoria.id,
         });
         this.syncCategoria(categoria.id);
-        this.snackBar.open(`Categoría seleccionada: ${categoria.nombre}`, 'Cerrar', {
-          duration: 3000,
-        });
+        this.notificacion.success(`Categoría seleccionada: ${categoria.nombre}`);
       }
     });
   }
@@ -147,9 +145,7 @@ export class EquipoAdminForm implements OnInit {
         });
         this.syncEntrenador(entrenador.id);
         const entrenadorNombre = `${entrenador.nombre} ${entrenador.apellido1 ?? ''}`.trim();
-        this.snackBar.open(`Entrenador seleccionado: ${entrenadorNombre}`, 'Cerrar', {
-          duration: 3000,
-        });
+        this.notificacion.success(`Entrenador seleccionado: ${entrenadorNombre}`);
       }
     });
   }
@@ -176,9 +172,7 @@ export class EquipoAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.equipoForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', {
-        duration: 4000,
-      });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -186,16 +180,12 @@ export class EquipoAdminForm implements OnInit {
     const selectedEntrenadorId = this.equipoForm.value.id_entrenador;
 
     if (!selectedCategoriaId) {
-      this.snackBar.open('Debe seleccionar una categoría', 'Cerrar', {
-        duration: 4000,
-      });
+      this.notificacion.success('Debe seleccionar una categoría');
       return;
     }
 
     if (!selectedEntrenadorId) {
-      this.snackBar.open('Debe seleccionar un entrenador', 'Cerrar', {
-        duration: 4000,
-      });
+      this.notificacion.success('Debe seleccionar un entrenador');
       return;
     }
 
@@ -224,13 +214,13 @@ export class EquipoAdminForm implements OnInit {
   private saveCreate(equipoData: any): void {
     this.oEquipoService.create(equipoData).subscribe({
       next: (id: number) => {
-        this.snackBar.open('Equipo creado exitosamente', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Equipo creado exitosamente');
         this.submitting.set(false);
         this.formSuccess.emit();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error creando el equipo');
-        this.snackBar.open('Error creando el equipo', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Error creando el equipo');
         console.error(err);
         this.submitting.set(false);
       },
@@ -240,13 +230,13 @@ export class EquipoAdminForm implements OnInit {
   private saveUpdate(equipoData: any): void {
     this.oEquipoService.update(equipoData).subscribe({
       next: (id: number) => {
-        this.snackBar.open('Equipo actualizado exitosamente', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Equipo actualizado exitosamente');
         this.submitting.set(false);
         this.formSuccess.emit();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error actualizando el equipo');
-        this.snackBar.open('Error actualizando el equipo', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Error actualizando el equipo');
         console.error(err);
         this.submitting.set(false);
       },

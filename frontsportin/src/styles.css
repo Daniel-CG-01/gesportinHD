@@ -39,11 +39,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Shared plist styles: controls layout and responsive behavior copied from noticias/comentarios
  *
- * Usage:
- * 1. Import this file at top of any component-specific plist CSS.
- *    e.g. @import '../../shared/plist-styles.css';
- *
- * 2. In the template, wrap pagination/RPP + new-button rows with:
+ * Usage: 
+ * In the template, wrap pagination/RPP + new-button rows with:
  *       <div class="container-fluid p-0 my-1">
  *         <div class="controls-row mb-2"> ... </div>
  *         <div class="d-flex"><div class="w-100 d-flex justify-content-center"> ... </div></div>

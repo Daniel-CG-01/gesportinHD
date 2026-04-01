@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ModalService } from '../../../shared/modal/modal.service';
 import { CompraService } from '../../../../service/compra';
 import { ArticuloService } from '../../../../service/articulo';
@@ -28,7 +28,7 @@ export class CompraAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oCompraService = inject(CompraService);
   private oArticuloService = inject(ArticuloService);
   private oFacturaService = inject(FacturaService);
@@ -116,7 +116,7 @@ export class CompraAdminForm implements OnInit {
       if (articulo?.id != null) {
         this.compraForm.patchValue({ id_articulo: articulo.id });
         this.selectedArticulo.set(articulo);
-        this.snackBar.open(`Artículo seleccionado: ${articulo.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Artículo seleccionado: ${articulo.descripcion}`);
       }
     });
   }
@@ -127,14 +127,14 @@ export class CompraAdminForm implements OnInit {
       if (factura?.id != null) {
         this.compraForm.patchValue({ id_factura: factura.id });
         this.selectedFactura.set(factura);
-        this.snackBar.open(`Factura seleccionada: #${factura.id}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Factura seleccionada: #${factura.id}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.compraForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.info('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -151,13 +151,13 @@ export class CompraAdminForm implements OnInit {
       compraData.id = this.compra.id;
       this.oCompraService.update(compraData).subscribe({
         next: () => {
-          this.snackBar.open('Compra actualizada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Compra actualizada exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando la compra');
-          this.snackBar.open('Error actualizando la compra', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error actualizando la compra');
           console.error(err);
           this.submitting.set(false);
         },
@@ -165,13 +165,13 @@ export class CompraAdminForm implements OnInit {
     } else {
       this.oCompraService.create(compraData).subscribe({
         next: () => {
-          this.snackBar.open('Compra creada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Compra creada exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando la compra');
-          this.snackBar.open('Error creando la compra', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error creando la compra');
           console.error(err);
           this.submitting.set(false);
         },

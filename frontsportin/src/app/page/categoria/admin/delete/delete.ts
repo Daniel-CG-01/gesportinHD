@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CategoriaService } from '../../../../service/categoria';
 import { ICategoria } from '../../../../model/categoria';
 import { CategoriaAdminDetail } from '../../../../component/categoria/admin/detail/detail';
@@ -16,7 +16,7 @@ export class CategoriaAdminDeletePage {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private oCategoriaService = inject(CategoriaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   oCategoria = signal<ICategoria | null>(null);
   loading = signal(true);
@@ -55,12 +55,12 @@ export class CategoriaAdminDeletePage {
   doDelete(): void {
     this.oCategoriaService.delete(this.id_categoria()).subscribe({
       next: () => {
-        this.snackBar.open('Categoría eliminada', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Categoría eliminada');
         this.router.navigate(['/categoria']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando la categoría');
-        this.snackBar.open('Error eliminando la categoría', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando la categoría');
         console.error(err);
       },
     });

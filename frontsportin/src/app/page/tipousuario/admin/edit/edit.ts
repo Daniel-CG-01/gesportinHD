@@ -2,7 +2,7 @@ import { Component, signal, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { TipousuarioService } from '../../../../service/tipousuario';
 import { TipousuarioAdminForm } from '../../../../component/tipousuario/admin/form/form';
 import { ITipousuario } from '../../../../model/tipousuario';
@@ -16,7 +16,7 @@ import { ITipousuario } from '../../../../model/tipousuario';
 export class TipousuarioAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private tipousuarioService = inject(TipousuarioService);
 
   tipousuario = signal<ITipousuario | null>(null);
@@ -48,7 +48,7 @@ export class TipousuarioAdminEditPage implements OnInit {
   }
 
   onFormSuccess(): void {
-    this.snackBar.open('Tipo de usuario actualizado exitosamente', 'Cerrar', { duration: 2000 });
+    this.notificacion.success('Tipo de usuario actualizado exitosamente');
     this.router.navigate(['/tipousuario']);
   }
 

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ComentarioService } from '../../../../service/comentario';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { IComentario } from '../../../../model/comentario';
 import { ComentarioAdminDetail } from '../../../../component/comentario/admin/detail/detail';
 
@@ -14,7 +14,7 @@ import { ComentarioAdminDetail } from '../../../../component/comentario/admin/de
 export class ComentarioAdminDeletePage {
   private route = inject(ActivatedRoute);
   private comentarioService = inject(ComentarioService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_comentario = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class ComentarioAdminDeletePage {
   doDelete(): void {
     this.comentarioService.delete(this.id_comentario()).subscribe({
       next: () => {
-        this.snackBar.open('Comentario eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Comentario eliminado');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando el comentario');
-        this.snackBar.open('Error eliminando el comentario', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el comentario');
         console.error(err);
       },
     });

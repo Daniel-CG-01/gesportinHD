@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { RolusuarioService } from '../../../../service/rolusuario';
 import { IRolusuario } from '../../../../model/rolusuario';
@@ -21,7 +21,7 @@ export class RolusuarioAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oRolusuarioService = inject(RolusuarioService);
   private modalService = inject(ModalService);
 
@@ -66,7 +66,7 @@ export class RolusuarioAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.rolusuarioForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -80,13 +80,13 @@ export class RolusuarioAdminForm implements OnInit {
       rolusuarioData.id = this.rolusuario.id;
       this.oRolusuarioService.update(rolusuarioData).subscribe({
         next: () => {
-          this.snackBar.open('Rol de usuario actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Rol de usuario actualizado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el rol de usuario');
-          this.snackBar.open('Error actualizando el rol de usuario', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el rol de usuario');
           console.error(err);
           this.submitting.set(false);
         },
@@ -94,13 +94,13 @@ export class RolusuarioAdminForm implements OnInit {
     } else {
       this.oRolusuarioService.create(rolusuarioData).subscribe({
         next: () => {
-          this.snackBar.open('Rol de usuario creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Rol de usuario creado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el rol de usuario');
-          this.snackBar.open('Error creando el rol de usuario', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el rol de usuario');
           console.error(err);
           this.submitting.set(false);
         },

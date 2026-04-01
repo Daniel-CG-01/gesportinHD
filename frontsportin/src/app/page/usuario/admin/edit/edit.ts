@@ -2,7 +2,7 @@ import { Component, signal, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { UsuarioService } from '../../../../service/usuarioService';
 import { UsuarioAdminForm } from '../../../../component/usuario/admin/form/form';
 import { IUsuario } from '../../../../model/usuario';
@@ -16,7 +16,7 @@ import { IUsuario } from '../../../../model/usuario';
 export class UsuarioAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private usuarioService = inject(UsuarioService);
 
   usuario = signal<IUsuario | null>(null);
@@ -48,7 +48,7 @@ export class UsuarioAdminEditPage implements OnInit {
   }
 
   onFormSuccess(): void {
-    this.snackBar.open('Usuario actualizado exitosamente', 'Cerrar', { duration: 2000 });
+    this.notificacion.success('Usuario actualizado exitosamente');
     this.router.navigate(['/usuario']);
   }
 

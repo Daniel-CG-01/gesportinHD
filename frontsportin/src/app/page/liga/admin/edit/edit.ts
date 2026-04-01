@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { LigaService } from '../../../../service/liga';
 import { ILiga } from '../../../../model/liga';
 import { LigaAdminForm } from '../../../../component/liga/admin/form/form';
@@ -16,7 +16,7 @@ export class LigaAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private ligaService = inject(LigaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_liga = signal<number>(0);
   loading = signal(true);
@@ -50,7 +50,7 @@ export class LigaAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando la liga');
-        this.snackBar.open('Error cargando la liga', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando la liga');
         console.error(err);
         this.loading.set(false);
       },

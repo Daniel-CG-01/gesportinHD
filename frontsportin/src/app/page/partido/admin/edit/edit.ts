@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { PartidoService } from '../../../../service/partido';
 import { IPartido } from '../../../../model/partido';
 import { PartidoAdminForm } from '../../../../component/partido/admin/form/form';
@@ -16,7 +16,7 @@ export class PartidoAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private partidoService = inject(PartidoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_partido = signal<number>(0);
   loading = signal(true);
@@ -48,7 +48,7 @@ export class PartidoAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando el partido');
-        this.snackBar.open('Error cargando el partido', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el partido');
         console.error(err);
         this.loading.set(false);
       },

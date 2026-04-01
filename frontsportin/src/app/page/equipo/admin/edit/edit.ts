@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { EquipoService } from '../../../../service/equipo';
 import { IEquipo } from '../../../../model/equipo';
 import { EquipoAdminForm } from '../../../../component/equipo/admin/form/form';
@@ -17,7 +17,7 @@ export class EquipoAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private oEquipoService = inject(EquipoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   equipo = signal<IEquipo | null>(null);
   loading = signal(true);
@@ -51,7 +51,7 @@ export class EquipoAdminEditPage implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando el equipo');
-        this.snackBar.open('Error cargando el equipo', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el equipo');
         console.error(err);
         this.loading.set(false);
       },

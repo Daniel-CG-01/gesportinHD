@@ -4,7 +4,7 @@ import { SessionService } from '../../../../service/session';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ModalService } from '../../../shared/modal/modal.service';
 import { INoticia } from '../../../../model/noticia';
 import { IClub } from '../../../../model/club';
@@ -27,7 +27,7 @@ export class NoticiaAdminForm implements OnInit {
   private fb = inject(FormBuilder);
   private oClubService = inject(ClubService);
   private oNoticiaService = inject(NoticiaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   session: SessionService = inject(SessionService);
 
   noticiaForm!: FormGroup;
@@ -134,9 +134,7 @@ export class NoticiaAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.noticiaForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', {
-        duration: 4000,
-      });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       this.noticiaForm.markAllAsTouched();
       return;
     }
@@ -163,12 +161,12 @@ export class NoticiaAdminForm implements OnInit {
       noticiaData.id = this.noticia.id;
       this.oNoticiaService.update(noticiaData).subscribe({
         next: () => {
-          this.snackBar.open('Noticia actualizada', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Noticia actualizada');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBar.open('Error actualizando la noticia', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error actualizando la noticia');
           console.error(err);
           this.submitting.set(false);
         },
@@ -176,12 +174,12 @@ export class NoticiaAdminForm implements OnInit {
     } else {
       this.oNoticiaService.create(noticiaData).subscribe({
         next: () => {
-          this.snackBar.open('Noticia creada', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Noticia creada');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBar.open('Error creando la noticia', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error creando la noticia');
           console.error(err);
           this.submitting.set(false);
         },
@@ -200,7 +198,7 @@ export class NoticiaAdminForm implements OnInit {
       if (club) {
         this.noticiaForm.patchValue({ id_club: club.id });
         this.syncClub(club.id);
-        this.snackBar.open(`Club seleccionado: ${club.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Club seleccionado: ${club.nombre}`);
       }
     });
   }

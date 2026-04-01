@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { TipoarticuloService } from '../../../../service/tipoarticulo';
 import { ClubService } from '../../../../service/club';
@@ -25,7 +25,7 @@ export class TipoarticuloAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oTipoarticuloService = inject(TipoarticuloService);
   private oClubService = inject(ClubService);
   private modalService = inject(ModalService);
@@ -85,7 +85,7 @@ export class TipoarticuloAdminForm implements OnInit {
       if (club?.id != null) {
         this.tipoarticuloForm.patchValue({ id_club: club.id });
         this.selectedClub.set(club);
-        this.snackBar.open(`Club seleccionado: ${club.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Club seleccionado: ${club.nombre}`);
       }
     });
   }
@@ -100,7 +100,7 @@ export class TipoarticuloAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.tipoarticuloForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -115,13 +115,13 @@ export class TipoarticuloAdminForm implements OnInit {
       tipoarticuloData.id = this.tipoarticulo.id;
       this.oTipoarticuloService.update(tipoarticuloData).subscribe({
         next: () => {
-          this.snackBar.open('Tipo de artículo actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Tipo de artículo actualizado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el tipo de artículo');
-          this.snackBar.open('Error actualizando el tipo de artículo', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el tipo de artículo');
           console.error(err);
           this.submitting.set(false);
         },
@@ -129,13 +129,13 @@ export class TipoarticuloAdminForm implements OnInit {
     } else {
       this.oTipoarticuloService.create(tipoarticuloData).subscribe({
         next: () => {
-          this.snackBar.open('Tipo de artículo creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Tipo de artículo creado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el tipo de artículo');
-          this.snackBar.open('Error creando el tipo de artículo', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el tipo de artículo');
           console.error(err);
           this.submitting.set(false);
         },

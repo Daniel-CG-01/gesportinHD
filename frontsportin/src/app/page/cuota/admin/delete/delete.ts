@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CuotaService } from '../../../../service/cuota';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CuotaAdminDetail } from '../../../../component/cuota/admin/detail/detail';
 
 @Component({
@@ -13,7 +13,7 @@ import { CuotaAdminDetail } from '../../../../component/cuota/admin/detail/detai
 export class CuotaAdminDeletePage {
   private route = inject(ActivatedRoute);
   private cuotaService = inject(CuotaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_cuota = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class CuotaAdminDeletePage {
   doDelete(): void {
     this.cuotaService.delete(this.id_cuota()).subscribe({
       next: () => {
-        this.snackBar.open('Cuota eliminada', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Cuota eliminada');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando la cuota');
-        this.snackBar.open('Error eliminando la cuota', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando la cuota');
         console.error(err);
       },
     });

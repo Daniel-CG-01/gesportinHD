@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PuntuacionService } from '../../../../service/puntuacion';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { PuntuacionAdminDetail } from '../../../../component/puntuacion/admin/detail/detail';
 
 @Component({
@@ -13,7 +13,7 @@ import { PuntuacionAdminDetail } from '../../../../component/puntuacion/admin/de
 export class PuntuacionAdminDeletePage {
   private route = inject(ActivatedRoute);
   private puntuacionService = inject(PuntuacionService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_puntuacion = signal<number>(0);
   error = signal<string | null>(null);
@@ -30,12 +30,12 @@ export class PuntuacionAdminDeletePage {
   doDelete(): void {
     this.puntuacionService.delete(this.id_puntuacion()).subscribe({
       next: () => {
-        this.snackBar.open('Puntuación eliminada', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Puntuación eliminada');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando la puntuación');
-        this.snackBar.open('Error eliminando la puntuación', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando la puntuación');
         console.error(err);
       },
     });

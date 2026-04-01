@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PuntuacionService } from '../../../../service/puntuacion';
@@ -27,7 +27,7 @@ export class PuntuacionAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private modalService = inject(ModalService);
   private oPuntuacionService = inject(PuntuacionService);
   private oNoticiaService = inject(NoticiaService);
@@ -106,7 +106,7 @@ export class PuntuacionAdminForm implements OnInit {
       if (noticia?.id != null) {
         this.puntuacionForm.patchValue({ id_noticia: noticia.id });
         this.selectedNoticia.set(noticia);
-        this.snackBar.open(`Noticia seleccionada: ${noticia.titulo}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Noticia seleccionada: ${noticia.titulo}`);
       }
     });
   }
@@ -117,7 +117,7 @@ export class PuntuacionAdminForm implements OnInit {
       if (usuario?.id != null) {
         this.puntuacionForm.patchValue({ id_usuario: usuario.id });
         this.selectedUsuario.set(usuario);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`);
       }
     });
   }
@@ -136,7 +136,7 @@ export class PuntuacionAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.puntuacionForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -152,13 +152,13 @@ export class PuntuacionAdminForm implements OnInit {
       puntuacionData.id = this.puntuacion.id;
       this.oPuntuacionService.update(puntuacionData).subscribe({
         next: () => {
-          this.snackBar.open('Puntuación actualizada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Puntuación actualizada exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando la puntuación');
-          this.snackBar.open('Error actualizando la puntuación', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando la puntuación');
           console.error(err);
           this.submitting.set(false);
         },
@@ -166,13 +166,13 @@ export class PuntuacionAdminForm implements OnInit {
     } else {
       this.oPuntuacionService.create(puntuacionData).subscribe({
         next: () => {
-          this.snackBar.open('Puntuación creada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Puntuación creada exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando la puntuación');
-          this.snackBar.open('Error creando la puntuación', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando la puntuación');
           console.error(err);
           this.submitting.set(false);
         },

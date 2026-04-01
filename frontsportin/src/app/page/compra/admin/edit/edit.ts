@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CompraService } from '../../../../service/compra';
 import { ICompra } from '../../../../model/compra';
 import { CompraAdminForm } from '../../../../component/compra/admin/form/form';
@@ -16,7 +16,7 @@ export class CompraAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private compraService = inject(CompraService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_compra = signal<number>(0);
   loading = signal(true);
@@ -48,7 +48,7 @@ export class CompraAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando la compra');
-        this.snackBar.open('Error cargando la compra', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando la compra');
         console.error(err);
         this.loading.set(false);
       },

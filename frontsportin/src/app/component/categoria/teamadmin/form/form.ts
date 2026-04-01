@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { CategoriaService } from '../../../../service/categoria';
 import { TemporadaService } from '../../../../service/temporada';
@@ -27,7 +27,7 @@ export class CategoriaTeamadminForm implements OnInit {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oCategoriaService = inject(CategoriaService);
   private oTemporadaService = inject(TemporadaService);
   private modalService = inject(ModalService);
@@ -87,7 +87,7 @@ export class CategoriaTeamadminForm implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando la categoría');
-        this.snackBar.open('Error cargando la categoría', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Error cargando la categoría');
         console.error(err);
         this.loading.set(false);
       }
@@ -114,7 +114,7 @@ export class CategoriaTeamadminForm implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error al sincronizar temporada:', err);
-        this.snackBar.open('Error al cargar la temporada seleccionada', 'Cerrar', { duration: 3000 });
+        this.notificacion.success('Error al cargar la temporada seleccionada');
         this.selectedTemporada.set(null);
       }
     });
@@ -127,7 +127,7 @@ export class CategoriaTeamadminForm implements OnInit {
       if (temporada) {
         this.categoriaForm.patchValue({ id_temporada: temporada.id });
         this.syncTemporada(temporada.id);
-        this.snackBar.open(`Temporada seleccionada: ${temporada.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Temporada seleccionada: ${temporada.descripcion}`);
       }
     });
   }
@@ -140,7 +140,7 @@ export class CategoriaTeamadminForm implements OnInit {
         next: (page) => this.temporadas.set(page.content),
         error: (err: HttpErrorResponse) => {
           console.error(err);
-          this.snackBar.open('Error cargando temporadas', 'Cerrar', { duration: 3000 });
+          this.notificacion.success('Error cargando temporadas');
         }
       });
   }
@@ -150,7 +150,7 @@ export class CategoriaTeamadminForm implements OnInit {
 
   onSubmit(): void {
     if (this.categoriaForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -165,13 +165,13 @@ export class CategoriaTeamadminForm implements OnInit {
       categoriaData.id = this.id();
       this.oCategoriaService.update(categoriaData).subscribe({
         next: () => {
-          this.snackBar.open('Categoría actualizada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Categoría actualizada exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando la categoría');
-          this.snackBar.open('Error actualizando la categoría', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando la categoría');
           console.error(err);
           this.submitting.set(false);
         }
@@ -179,13 +179,13 @@ export class CategoriaTeamadminForm implements OnInit {
     } else {
       this.oCategoriaService.create(categoriaData).subscribe({
         next: () => {
-          this.snackBar.open('Categoría creada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Categoría creada exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando la categoría');
-          this.snackBar.open('Error creando la categoría', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando la categoría');
           console.error(err);
           this.submitting.set(false);
         }

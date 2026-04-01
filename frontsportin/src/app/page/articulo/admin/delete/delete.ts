@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticuloService } from '../../../../service/articulo';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ArticuloAdminDetail } from '../../../../component/articulo/admin/detail/detail';
 
 @Component({
@@ -13,7 +13,7 @@ import { ArticuloAdminDetail } from '../../../../component/articulo/admin/detail
 export class ArticuloAdminDeletePage {
   private route = inject(ActivatedRoute);
   private articuloService = inject(ArticuloService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_articulo = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class ArticuloAdminDeletePage {
   doDelete(): void {
     this.articuloService.delete(this.id_articulo()).subscribe({
       next: () => {
-        this.snackBar.open('Artículo eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Artículo eliminado');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando el artículo');
-        this.snackBar.open('Error eliminando el artículo', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el artículo');
         console.error(err);
       },
     });

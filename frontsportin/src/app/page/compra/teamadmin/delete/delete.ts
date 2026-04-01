@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CompraService } from '../../../../service/compra';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CompraTeamadminDetail } from '../../../../component/compra/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class CompraTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private compraService = inject(CompraService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_compra = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class CompraTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.compraService.delete(this.id_compra()).subscribe({
       next: () => {
-        this.snackBar.open('Compra eliminada', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Compra eliminada');
         this.router.navigate(['/compra/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

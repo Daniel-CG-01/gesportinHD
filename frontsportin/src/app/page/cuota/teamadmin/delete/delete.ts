@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CuotaService } from '../../../../service/cuota';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CuotaTeamadminDetail } from '../../../../component/cuota/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class CuotaTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cuotaService = inject(CuotaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_cuota = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class CuotaTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.cuotaService.delete(this.id_cuota()).subscribe({
       next: () => {
-        this.snackBar.open('Cuota eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Cuota eliminado/a');
         this.router.navigate(['/cuota/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

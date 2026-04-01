@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { JugadorService } from '../../../../service/jugador-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { JugadorTeamadminDetail } from '../../../../component/jugador/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class JugadorTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private jugadorService = inject(JugadorService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_jugador = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class JugadorTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.jugadorService.delete(this.id_jugador()).subscribe({
       next: () => {
-        this.snackBar.open('Jugador eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Jugador eliminado/a');
         this.router.navigate(['/jugador/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

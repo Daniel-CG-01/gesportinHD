@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { HttpErrorResponse } from '@angular/common/http';
 import { JugadorService } from '../../../../service/jugador-service';
 import { IJugador } from '../../../../model/jugador';
@@ -17,7 +17,7 @@ export class JugadorAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private jugadorService = inject(JugadorService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_jugador = signal<number>(0);
   loading = signal(true);
@@ -49,7 +49,7 @@ export class JugadorAdminEditPage implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando el jugador');
-        this.snackBar.open('Error cargando el jugador', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el jugador');
         console.error(err);
         this.loading.set(false);
       },

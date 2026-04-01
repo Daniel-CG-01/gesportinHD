@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { CuotaService } from '../../../../service/cuota';
 import { EquipoService } from '../../../../service/equipo';
@@ -27,7 +27,7 @@ export class CuotaTeamadminForm implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oCuotaService = inject(CuotaService);
   private oEquipoService = inject(EquipoService);
   private modalService = inject(ModalService);
@@ -144,14 +144,14 @@ export class CuotaTeamadminForm implements OnInit {
       if (equipo?.id != null) {
         this.cuotaForm.patchValue({ id_equipo: equipo.id });
         this.selectedEquipo.set(equipo);
-        this.snackBar.open(`Equipo seleccionado: ${equipo.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Equipo seleccionado: ${equipo.nombre}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.cuotaForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -168,13 +168,13 @@ export class CuotaTeamadminForm implements OnInit {
       cuotaData.id = this.id();
       this.oCuotaService.update(cuotaData).subscribe({
         next: () => {
-          this.snackBar.open('Cuota actualizada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Cuota actualizada exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando la cuota');
-          this.snackBar.open('Error actualizando la cuota', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando la cuota');
           console.error(err);
           this.submitting.set(false);
         },
@@ -182,13 +182,13 @@ export class CuotaTeamadminForm implements OnInit {
     } else {
       this.oCuotaService.create(cuotaData).subscribe({
         next: () => {
-          this.snackBar.open('Cuota creada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Cuota creada exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando la cuota');
-          this.snackBar.open('Error creando la cuota', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando la cuota');
           console.error(err);
           this.submitting.set(false);
         },

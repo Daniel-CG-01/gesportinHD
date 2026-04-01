@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PartidoService } from '../../../../service/partido';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { PartidoAdminDetail } from '../../../../component/partido/admin/detail/detail';
 
 @Component({
@@ -13,7 +13,7 @@ import { PartidoAdminDetail } from '../../../../component/partido/admin/detail/d
 export class PartidoAdminDeletePage {
   private route = inject(ActivatedRoute);
   private partidoService = inject(PartidoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_partido = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class PartidoAdminDeletePage {
   doDelete(): void {
     this.partidoService.delete(this.id_partido()).subscribe({
       next: () => {
-        this.snackBar.open('Partido eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Partido eliminado');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando el partido');
-        this.snackBar.open('Error eliminando el partido', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el partido');
         console.error(err);
       },
     });

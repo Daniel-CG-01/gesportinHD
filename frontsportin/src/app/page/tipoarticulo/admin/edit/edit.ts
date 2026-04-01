@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { TipoarticuloService } from '../../../../service/tipoarticulo';
 import { ITipoarticulo } from '../../../../model/tipoarticulo';
 import { TipoarticuloAdminForm } from '../../../../component/tipoarticulo/admin/form/form';
@@ -16,7 +16,7 @@ export class TipoarticuloAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private tipoarticuloService = inject(TipoarticuloService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_tipoarticulo = signal<number>(0);
   loading = signal(true);
@@ -48,7 +48,7 @@ export class TipoarticuloAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando el tipo de artículo');
-        this.snackBar.open('Error cargando el tipo de artículo', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el tipo de artículo');
         console.error(err);
         this.loading.set(false);
       },

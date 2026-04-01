@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NoticiaService } from '../../../../service/noticia';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { INoticia } from '../../../../model/noticia';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NoticiaAdminDetail } from '../../../../component/noticia/admin/detail/detail';
@@ -16,7 +16,7 @@ export class NoticiaAdminDeletePage {
 
   private route = inject(ActivatedRoute);
   private oNoticiaService = inject(NoticiaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   oNoticia = signal<INoticia | null>(null);
   loading = signal(true);
@@ -36,13 +36,13 @@ export class NoticiaAdminDeletePage {
   doDelete() {
     this.oNoticiaService.delete(this.id_noticia()).subscribe({
       next: (data: any) => {
-        this.snackBar.open('Noticia eliminada', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Noticia eliminada');
         console.log('Noticia eliminada');
         window.history.back();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando la noticia');
-        this.snackBar.open('Error eliminando la noticia', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando la noticia');
         console.error(err);
       },
     });

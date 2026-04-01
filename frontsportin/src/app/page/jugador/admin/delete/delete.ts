@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JugadorService } from '../../../../service/jugador-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { JugadorAdminDetail } from '../../../../component/jugador/admin/detail/detail';
 
 @Component({
@@ -13,7 +13,7 @@ import { JugadorAdminDetail } from '../../../../component/jugador/admin/detail/d
 export class JugadorAdminDeletePage {
   private route = inject(ActivatedRoute);
   private jugadorService = inject(JugadorService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_jugador = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class JugadorAdminDeletePage {
   doDelete(): void {
     this.jugadorService.delete(this.id_jugador()).subscribe({
       next: () => {
-        this.snackBar.open('Jugador eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Jugador eliminado');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando el jugador');
-        this.snackBar.open('Error eliminando el jugador', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el jugador');
         console.error(err);
       },
     });

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TemporadaService } from '../../../../service/temporada';
 import { ITemporada } from '../../../../model/temporada';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { TemporadaAdminDetail } from '../../../../component/temporada/admin/detail/detail';
 
 @Component({
@@ -16,7 +16,7 @@ export class TemporadaAdminDeletePage {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private oTemporadaService = inject(TemporadaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   oTemporada = signal<ITemporada | null>(null);
   loading = signal(true);
@@ -55,12 +55,12 @@ export class TemporadaAdminDeletePage {
   doDelete(): void {
     this.oTemporadaService.delete(this.id_temporada()).subscribe({
       next: () => {
-        this.snackBar.open('Temporada eliminada correctamente', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Temporada eliminada correctamente');
         this.router.navigate(['/temporada']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando la temporada');
-        this.snackBar.open('Error eliminando la temporada', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando la temporada');
         console.error(err);
       },
     });

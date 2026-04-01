@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TemporadaService } from '../../../../service/temporada';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { TemporadaTeamadminDetail } from '../../../../component/temporada/teamadmin/detail/detail';
 import { ConfirmacionBorradoComponent } from '../../../../component/shared/confirmacion-borrado/confirmacion-borrado.component';
 
@@ -15,7 +15,7 @@ export class TemporadaTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private temporadaService = inject(TemporadaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_temporada = signal<number>(0);
 
@@ -28,12 +28,12 @@ export class TemporadaTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.temporadaService.delete(this.id_temporada()).subscribe({
       next: () => {
-        this.snackBar.open('Temporada eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Temporada eliminada correctamente');
         this.router.navigate(['/temporada/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

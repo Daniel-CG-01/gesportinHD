@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PagoService } from '../../../../service/pago';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { PagoTeamadminDetail } from '../../../../component/pago/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class PagoTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private pagoService = inject(PagoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_pago = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class PagoTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.pagoService.delete(this.id_pago()).subscribe({
       next: () => {
-        this.snackBar.open('Pago eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Pago eliminado/a');
         this.router.navigate(['/pago/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

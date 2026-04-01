@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CuotaService } from '../../../../service/cuota';
 import { ICuota } from '../../../../model/cuota';
 import { CuotaAdminForm } from '../../../../component/cuota/admin/form/form';
@@ -16,7 +16,7 @@ export class CuotaAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cuotaService = inject(CuotaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_cuota = signal<number>(0);
   loading = signal(true);
@@ -48,7 +48,7 @@ export class CuotaAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando la cuota');
-        this.snackBar.open('Error cargando la cuota', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando la cuota');
         console.error(err);
         this.loading.set(false);
       },

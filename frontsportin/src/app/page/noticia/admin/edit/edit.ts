@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { NoticiaService } from '../../../../service/noticia';
 import { INoticia } from '../../../../model/noticia';
 import { NoticiaAdminForm } from '../../../../component/noticia/admin/form/form';
@@ -17,7 +17,7 @@ export class NoticiaAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private noticiaService = inject(NoticiaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_noticia = signal<number>(0);
   loading = signal(true);
@@ -52,7 +52,7 @@ export class NoticiaAdminEditPage implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando la noticia');
-        this.snackBar.open('Error cargando la noticia', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando la noticia');
         console.error(err);
         this.loading.set(false);
       },

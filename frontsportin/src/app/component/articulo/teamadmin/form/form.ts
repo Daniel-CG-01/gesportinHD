@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { ArticuloService } from '../../../../service/articulo';
 import { TipoarticuloService } from '../../../../service/tipoarticulo';
@@ -27,7 +27,7 @@ export class ArticuloTeamadminForm implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oArticuloService = inject(ArticuloService);
   private oTipoarticuloService = inject(TipoarticuloService);
   private modalService = inject(ModalService);
@@ -145,14 +145,14 @@ export class ArticuloTeamadminForm implements OnInit {
       if (tipoarticulo?.id != null) {
         this.articuloForm.patchValue({ id_tipoarticulo: tipoarticulo.id });
         this.selectedTipoarticulo.set(tipoarticulo);
-        this.snackBar.open(`Tipo seleccionado: ${tipoarticulo.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Tipo seleccionado: ${tipoarticulo.descripcion}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.articuloForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -169,13 +169,13 @@ export class ArticuloTeamadminForm implements OnInit {
       articuloData.id = this.id();
       this.oArticuloService.update(articuloData).subscribe({
         next: () => {
-          this.snackBar.open('Artículo actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Artículo actualizado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el artículo');
-          this.snackBar.open('Error actualizando el artículo', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el artículo');
           console.error(err);
           this.submitting.set(false);
         },
@@ -183,13 +183,13 @@ export class ArticuloTeamadminForm implements OnInit {
     } else {
       this.oArticuloService.create(articuloData).subscribe({
         next: () => {
-          this.snackBar.open('Artículo creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Artículo creado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el artículo');
-          this.snackBar.open('Error creando el artículo', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el artículo');
           console.error(err);
           this.submitting.set(false);
         },

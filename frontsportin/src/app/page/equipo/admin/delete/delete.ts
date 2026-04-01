@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { EquipoAdminDetail } from '../../../../component/equipo/admin/detail/detail';
 import { EquipoService } from '../../../../service/equipo';
 
@@ -14,7 +14,7 @@ import { EquipoService } from '../../../../service/equipo';
 export class EquipoAdminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private oEquipoService = inject(EquipoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_equipo = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class EquipoAdminDeletePage implements OnInit {
   doDelete() {
     this.oEquipoService.delete(this.id_equipo()).subscribe({
       next: (data: any) => {
-        this.snackBar.open('Equipo eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Equipo eliminado');
         window.history.back();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el equipo');
-        this.snackBar.open('Error eliminando el equipo', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el equipo');
         console.error(err);
       },
     });

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ModalService } from '../../../shared/modal/modal.service';
 import { ComentarioartService } from '../../../../service/comentarioart';
 import { ArticuloService } from '../../../../service/articulo';
@@ -28,7 +28,7 @@ export class ComentarioartAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oComentarioartService = inject(ComentarioartService);
   private oArticuloService = inject(ArticuloService);
   private oUsuarioService = inject(UsuarioService);
@@ -102,7 +102,7 @@ export class ComentarioartAdminForm implements OnInit {
       if (articulo?.id != null) {
         this.comentarioartForm.patchValue({ id_articulo: articulo.id });
         this.selectedArticulo.set(articulo);
-        this.snackBar.open(`Artículo seleccionado: ${articulo.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Artículo seleccionado: ${articulo.descripcion}`);
       }
     });
   }
@@ -113,7 +113,7 @@ export class ComentarioartAdminForm implements OnInit {
       if (usuario?.id != null) {
         this.comentarioartForm.patchValue({ id_usuario: usuario.id });
         this.selectedUsuario.set(usuario);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`);
       }
     });
   }
@@ -132,7 +132,7 @@ export class ComentarioartAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.comentarioartForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.info('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -148,13 +148,13 @@ export class ComentarioartAdminForm implements OnInit {
       comentarioartData.id = this.comentarioart.id;
       this.oComentarioartService.update(comentarioartData).subscribe({
         next: () => {
-          this.snackBar.open('Comentario actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Comentario actualizado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el comentario');
-          this.snackBar.open('Error actualizando el comentario', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error actualizando el comentario');
           console.error(err);
           this.submitting.set(false);
         },
@@ -162,13 +162,13 @@ export class ComentarioartAdminForm implements OnInit {
     } else {
       this.oComentarioartService.create(comentarioartData).subscribe({
         next: () => {
-          this.snackBar.open('Comentario creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Comentario creado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el comentario');
-          this.snackBar.open('Error creando el comentario', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error creando el comentario');
           console.error(err);
           this.submitting.set(false);
         },

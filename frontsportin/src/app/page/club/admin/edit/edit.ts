@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ClubService } from '../../../../service/club';
 import { IClub } from '../../../../model/club';
 import { ClubAdminForm } from '../../../../component/club/admin/form/form';
@@ -17,7 +17,7 @@ export class ClubAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private clubService = inject(ClubService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_club = signal<number>(0);
   loading = signal(true);
@@ -52,7 +52,7 @@ export class ClubAdminEditPage implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando el club');
-        this.snackBar.open('Error cargando el club', 'Cerrar', { duration: 4000 });
+        this.notificacion.success('Error cargando el club');
         console.error(err);
         this.loading.set(false);
       },

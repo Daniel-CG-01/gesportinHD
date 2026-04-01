@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ComentarioService } from '../../../../service/comentario';
 import { IComentario } from '../../../../model/comentario';
 import { ComentarioAdminForm } from '../../../../component/comentario/admin/form/form';
@@ -17,7 +17,7 @@ export class ComentarioAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private comentarioService = inject(ComentarioService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_comentario = signal<number>(0);
   loading = signal(true);
@@ -51,7 +51,7 @@ export class ComentarioAdminEditPage implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error cargando el comentario');
-        this.snackBar.open('Error cargando el comentario', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el comentario');
         console.error(err);
         this.loading.set(false);
       },

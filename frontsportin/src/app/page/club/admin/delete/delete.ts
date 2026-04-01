@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClubService } from '../../../../service/club';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { IClub } from '../../../../model/club';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ClubAdminDetail } from '../../../../component/club/admin/detail/detail';
@@ -16,7 +16,7 @@ export class ClubAdminDeletePage {
   
   private route = inject(ActivatedRoute);
   private oClubService = inject(ClubService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   oClub = signal<IClub | null>(null);
   loading = signal(true);
@@ -36,13 +36,13 @@ export class ClubAdminDeletePage {
   doDelete() {
     this.oClubService.delete(this.id_club()).subscribe({
       next: (data: any) => {
-        this.snackBar.open('Club eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Club eliminado');
         console.log('Club eliminado');
         window.history.back();
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el club');
-        this.snackBar.open('Error eliminando el club', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el club');
         console.error(err);
       },
     });

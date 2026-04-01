@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ArticuloService } from '../../../../service/articulo';
 import { IArticulo } from '../../../../model/articulo';
 import { ArticuloAdminForm } from '../../../../component/articulo/admin/form/form';
@@ -16,7 +16,7 @@ export class ArticuloAdminEditPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private articuloService = inject(ArticuloService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_articulo = signal<number>(0);
   loading = signal(true);
@@ -48,7 +48,7 @@ export class ArticuloAdminEditPage implements OnInit {
       },
       error: (err) => {
         this.error.set('Error cargando el artículo');
-        this.snackBar.open('Error cargando el artículo', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error cargando el artículo');
         console.error(err);
         this.loading.set(false);
       },

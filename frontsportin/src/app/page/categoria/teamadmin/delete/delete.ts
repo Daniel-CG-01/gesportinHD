@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CategoriaService } from '../../../../service/categoria';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CategoriaTeamadminDetail } from '../../../../component/categoria/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class CategoriaTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private categoriaService = inject(CategoriaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_categoria = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class CategoriaTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.categoriaService.delete(this.id_categoria()).subscribe({
       next: () => {
-        this.snackBar.open('Categoria eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Categoria eliminado/a');
         this.router.navigate(['/categoria/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LigaService } from '../../../../service/liga';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { LigaTeamadminDetail } from '../../../../component/liga/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class LigaTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private ligaService = inject(LigaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_liga = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class LigaTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.ligaService.delete(this.id_liga()).subscribe({
       next: () => {
-        this.snackBar.open('Liga eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Liga eliminado/a');
         this.router.navigate(['/liga/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

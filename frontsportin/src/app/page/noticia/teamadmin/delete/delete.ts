@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NoticiaService } from '../../../../service/noticia';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { NoticiaTeamadminDetail } from '../../../../component/noticia/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class NoticiaTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private noticiaService = inject(NoticiaService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_noticia = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class NoticiaTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.noticiaService.delete(this.id_noticia()).subscribe({
       next: () => {
-        this.snackBar.open('Noticia eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Noticia eliminado/a');
         this.router.navigate(['/noticia/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

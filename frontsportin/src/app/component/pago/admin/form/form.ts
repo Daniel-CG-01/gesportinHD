@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { PagoService } from '../../../../service/pago';
 import { CuotaService } from '../../../../service/cuota';
@@ -28,7 +28,7 @@ export class PagoAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oPagoService = inject(PagoService);
   private oCuotaService = inject(CuotaService);
   private oJugadorService = inject(JugadorService);
@@ -116,7 +116,7 @@ export class PagoAdminForm implements OnInit {
       if (cuota?.id != null) {
         this.pagoForm.patchValue({ id_cuota: cuota.id });
         this.selectedCuota.set(cuota);
-        this.snackBar.open(`Cuota seleccionada: ${cuota.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Cuota seleccionada: ${cuota.descripcion}`);
       }
     });
   }
@@ -127,14 +127,14 @@ export class PagoAdminForm implements OnInit {
       if (jugador?.id != null) {
         this.pagoForm.patchValue({ id_jugador: jugador.id });
         this.selectedJugador.set(jugador);
-        this.snackBar.open(`Jugador seleccionado: ${jugador.usuario?.nombre} ${jugador.usuario?.apellido1}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Jugador seleccionado: ${jugador.usuario?.nombre} ${jugador.usuario?.apellido1}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.pagoForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -151,13 +151,13 @@ export class PagoAdminForm implements OnInit {
       pagoData.id = this.pago.id;
       this.oPagoService.update(pagoData).subscribe({
         next: () => {
-          this.snackBar.open('Pago actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Pago actualizado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el pago');
-          this.snackBar.open('Error actualizando el pago', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el pago');
           console.error(err);
           this.submitting.set(false);
         },
@@ -165,13 +165,13 @@ export class PagoAdminForm implements OnInit {
     } else {
       this.oPagoService.create(pagoData).subscribe({
         next: () => {
-          this.snackBar.open('Pago creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Pago creado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el pago');
-          this.snackBar.open('Error creando el pago', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el pago');
           console.error(err);
           this.submitting.set(false);
         },

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { ComentarioService } from '../../../../service/comentario';
 import { UsuarioService } from '../../../../service/usuarioService';
@@ -30,7 +30,7 @@ export class ComentarioTeamadminForm implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oComentarioService = inject(ComentarioService);
   private oUsuarioService = inject(UsuarioService);
   private oNoticiaService = inject(NoticiaService);
@@ -147,7 +147,7 @@ export class ComentarioTeamadminForm implements OnInit {
       if (usuario?.id != null) {
         this.comentarioForm.patchValue({ id_usuario: usuario.id });
         this.selectedUsuario.set(usuario);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre}`);
       }
     });
   }
@@ -158,14 +158,14 @@ export class ComentarioTeamadminForm implements OnInit {
       if (noticia?.id != null) {
         this.comentarioForm.patchValue({ id_noticia: noticia.id });
         this.selectedNoticia.set(noticia);
-        this.snackBar.open(`Noticia seleccionada: ${noticia.titulo}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Noticia seleccionada: ${noticia.titulo}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.comentarioForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -181,13 +181,13 @@ export class ComentarioTeamadminForm implements OnInit {
       comentarioData.id = this.id();
       this.oComentarioService.update(comentarioData).subscribe({
         next: () => {
-          this.snackBar.open('Comentario actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Comentario actualizado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el comentario');
-          this.snackBar.open('Error actualizando el comentario', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el comentario');
           console.error(err);
           this.submitting.set(false);
         },
@@ -195,13 +195,13 @@ export class ComentarioTeamadminForm implements OnInit {
     } else {
       this.oComentarioService.create(comentarioData).subscribe({
         next: () => {
-          this.snackBar.open('Comentario creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Comentario creado exitosamente');
           this.submitting.set(false);
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el comentario');
-          this.snackBar.open('Error creando el comentario', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el comentario');
           console.error(err);
           this.submitting.set(false);
         },

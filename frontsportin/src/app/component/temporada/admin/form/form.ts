@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TemporadaService } from '../../../../service/temporada';
 import { ITemporada } from '../../../../model/temporada';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { IClub } from '../../../../model/club';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { ClubService } from '../../../../service/club';
@@ -25,7 +25,7 @@ export class TemporadaAdminForm implements OnInit {
   private router = inject(Router);
   private oTemporadaService = inject(TemporadaService);
   private oClubService = inject(ClubService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private modalService = inject(ModalService);
   session: SessionService = inject(SessionService);
 
@@ -97,13 +97,13 @@ export class TemporadaAdminForm implements OnInit {
         next: () => {
           this.submitting.set(false);
           if (this.temporadaForm) this.temporadaForm.markAsPristine();
-          this.snackBar.open('Se ha guardado correctamente', 'Cerrar', { duration: 3000 });
+          this.notificacion.success('Se ha guardado correctamente');
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.submitting.set(false);
           this.error.set('Error al guardar el registro');
-          this.snackBar.open('Error al guardar el registro', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error al guardar el registro');
           console.error(err);
         },
       });
@@ -112,13 +112,13 @@ export class TemporadaAdminForm implements OnInit {
         next: () => {
           this.submitting.set(false);
           if (this.temporadaForm) this.temporadaForm.markAsPristine();
-          this.snackBar.open('Se ha creado correctamente', 'Cerrar', { duration: 3000 });
+          this.notificacion.success('Se ha creado correctamente');
           this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.submitting.set(false);
           this.error.set('Error al crear el registro');
-          this.snackBar.open('Error al crear el registro', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error al crear el registro');
           console.error(err);
         },
       });
@@ -132,7 +132,7 @@ export class TemporadaAdminForm implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error al sincronizar club:', err);
-        this.snackBar.open('Error al cargar el club seleccionado', 'Cerrar', { duration: 3000 });
+        this.notificacion.success('Error al cargar el club seleccionado');
       },
     });
   }
@@ -144,7 +144,7 @@ export class TemporadaAdminForm implements OnInit {
       if (club) {
         this.temporadaForm.patchValue({ id_club: club.id });
         this.syncClub(club.id);
-        this.snackBar.open(`Club seleccionado: ${club.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Club seleccionado: ${club.nombre}`);
       }
     });
   }

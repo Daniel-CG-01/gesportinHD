@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComentarioService } from '../../../../service/comentario';
@@ -27,7 +27,7 @@ export class ComentarioAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private modalService = inject(ModalService);
   private oComentarioService = inject(ComentarioService);
   private oUsuarioService = inject(UsuarioService);
@@ -86,7 +86,7 @@ export class ComentarioAdminForm implements OnInit {
       next: (usuario) => this.selectedUsuario.set(usuario),
       error: (err: HttpErrorResponse) => {
         console.error(err);
-        this.snackBar.open('Error al cargar el usuario seleccionado', 'Cerrar', { duration: 3000 });
+        this.notificacion.success('Error al cargar el usuario seleccionado');
         this.selectedUsuario.set(null);
       }
     });
@@ -98,7 +98,7 @@ export class ComentarioAdminForm implements OnInit {
       next: (noticia) => this.selectedNoticia.set(noticia),
       error: (err: HttpErrorResponse) => {
         console.error(err);
-        this.snackBar.open('Error al cargar la noticia seleccionada', 'Cerrar', { duration: 3000 });
+        this.notificacion.success('Error al cargar la noticia seleccionada');
         this.selectedNoticia.set(null);
       }
     });
@@ -110,7 +110,7 @@ export class ComentarioAdminForm implements OnInit {
       if (usuario) {
         this.comentarioForm.patchValue({ id_usuario: usuario.id });
         this.syncUsuario(usuario.id);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre}`);
       }
     });
   }
@@ -121,7 +121,7 @@ export class ComentarioAdminForm implements OnInit {
       if (noticia) {
         this.comentarioForm.patchValue({ id_noticia: noticia.id });
         this.syncNoticia(noticia.id);
-        this.snackBar.open(`Noticia seleccionada: ${noticia.titulo}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Noticia seleccionada: ${noticia.titulo}`);
       }
     });
   }
@@ -132,7 +132,7 @@ export class ComentarioAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.comentarioForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -147,13 +147,13 @@ export class ComentarioAdminForm implements OnInit {
     if (this.isEditMode && this.comentario?.id) {
       comentarioData.id = this.comentario.id;
       this.oComentarioService.update(comentarioData).subscribe({
-        next: () => { this.snackBar.open('Comentario actualizado exitosamente', 'Cerrar', { duration: 4000 }); this.submitting.set(false); this.formSuccess.emit(); },
-        error: (err: HttpErrorResponse) => { this.error.set('Error actualizando el comentario'); this.snackBar.open('Error actualizando el comentario', 'Cerrar', { duration: 4000 }); console.error(err); this.submitting.set(false); }
+        next: () => { this.notificacion.success('Comentario actualizado exitosamente'); this.submitting.set(false); this.formSuccess.emit(); },
+        error: (err: HttpErrorResponse) => { this.error.set('Error actualizando el comentario'); this.notificacion.success('Error actualizando el comentario'); console.error(err); this.submitting.set(false); }
       });
     } else {
       this.oComentarioService.create(comentarioData).subscribe({
-        next: () => { this.snackBar.open('Comentario creado exitosamente', 'Cerrar', { duration: 4000 }); this.submitting.set(false); this.formSuccess.emit(); },
-        error: (err: HttpErrorResponse) => { this.error.set('Error creando el comentario'); this.snackBar.open('Error creando el comentario', 'Cerrar', { duration: 4000 }); console.error(err); this.submitting.set(false); }
+        next: () => { this.notificacion.success('Comentario creado exitosamente'); this.submitting.set(false); this.formSuccess.emit(); },
+        error: (err: HttpErrorResponse) => { this.error.set('Error creando el comentario'); this.notificacion.success('Error creando el comentario'); console.error(err); this.submitting.set(false); }
       });
     }
   }

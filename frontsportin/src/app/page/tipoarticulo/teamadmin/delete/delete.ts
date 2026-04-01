@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TipoarticuloService } from '../../../../service/tipoarticulo';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { TipoarticuloTeamadminDetail } from '../../../../component/tipoarticulo/teamadmin/detail/detail';
 
 @Component({
@@ -14,7 +14,7 @@ export class TipoarticuloTeamadminDeletePage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private tipoarticuloService = inject(TipoarticuloService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   error = signal<string | null>(null);
   id_tipoarticulo = signal<number>(0);
 
@@ -27,12 +27,12 @@ export class TipoarticuloTeamadminDeletePage implements OnInit {
   doDelete(): void {
     this.tipoarticuloService.delete(this.id_tipoarticulo()).subscribe({
       next: () => {
-        this.snackBar.open('Tipoarticulo eliminado/a', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Tipoarticulo eliminado/a');
         this.router.navigate(['/tipoarticulo/teamadmin']);
       },
       error: (err: HttpErrorResponse) => {
         this.error.set('Error eliminando el registro');
-        this.snackBar.open('Error eliminando el registro', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el registro');
         console.error(err);
       },
     });

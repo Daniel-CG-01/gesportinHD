@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { debug as ENV_DEBUG } from '../../../environment/environment';
 import { SessionService } from '../../../service/session';
 import { IToken } from '../../../model/token';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../service/notificacion';;
 
 @Component({
   selector: 'app-login.component',
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   @Inject(SessionService)
   private oSessionService = inject(SessionService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   ngOnInit(): void {
     this.initForm();
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
             if (this.debug()) {
               console.log('Login successful, token: ', data);
             }
-            this.snackBar.open('Login successful', 'Close', { duration: 3000 });
+            this.notificacion.success('Login successful');
             if (this.oSessionService.isUser()) {
               this.router.navigate(['/mi']);
             } else {
@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
             // actualizar estado mediante signals
             this.submitting.set(false);
             this.error.set(err.error?.message || err.statusText || 'Login failed');
-            this.snackBar.open('Login failed: ' + (err.error?.message || err.statusText), 'Close', { duration: 5000 });
+            this.notificacion.error('Login failed: ' + (err.error?.message || err.statusText));
           },
         });
       })
@@ -100,7 +100,7 @@ export class LoginComponent implements OnInit {
         if (this.debug()) {
           console.error('Hashing failed:', err);
         }
-        this.snackBar.open('Error preparando credenciales', 'Close', { duration: 5000 });
+        this.notificacion.error('Error preparando credenciales');
       });
   }
 

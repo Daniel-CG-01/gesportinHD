@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { UsuarioService } from '../../../../service/usuarioService';
 import { ClubService } from '../../../../service/club';
@@ -31,7 +31,7 @@ export class UsuarioAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oUsuarioService = inject(UsuarioService);
   private oClubService = inject(ClubService);
   private oTipousuarioService = inject(TipousuarioService);
@@ -159,7 +159,7 @@ export class UsuarioAdminForm implements OnInit {
       if (tipo?.id != null) {
         this.usuarioForm.patchValue({ id_tipousuario: tipo.id });
         this.selectedTipousuario.set(tipo);
-        this.snackBar.open(`Tipo seleccionado: ${tipo.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Tipo seleccionado: ${tipo.descripcion}`);
       }
     });
   }
@@ -170,7 +170,7 @@ export class UsuarioAdminForm implements OnInit {
       if (rol?.id != null) {
         this.usuarioForm.patchValue({ id_rolusuario: rol.id });
         this.selectedRolusuario.set(rol);
-        this.snackBar.open(`Rol seleccionado: ${rol.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Rol seleccionado: ${rol.descripcion}`);
       }
     });
   }
@@ -181,14 +181,14 @@ export class UsuarioAdminForm implements OnInit {
       if (club?.id != null) {
         this.usuarioForm.patchValue({ id_club: club.id });
         this.selectedClub.set(club);
-        this.snackBar.open(`Club seleccionado: ${club.nombre}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Club seleccionado: ${club.nombre}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.usuarioForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -212,13 +212,13 @@ export class UsuarioAdminForm implements OnInit {
       usuarioData.id = this.usuario.id;
       this.oUsuarioService.update(usuarioData).subscribe({
         next: () => {
-          this.snackBar.open('Usuario actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Usuario actualizado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el usuario');
-          this.snackBar.open('Error actualizando el usuario', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando el usuario');
           console.error(err);
           this.submitting.set(false);
         },
@@ -226,13 +226,13 @@ export class UsuarioAdminForm implements OnInit {
     } else {
       this.oUsuarioService.create(usuarioData).subscribe({
         next: () => {
-          this.snackBar.open('Usuario creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Usuario creado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el usuario');
-          this.snackBar.open('Error creando el usuario', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando el usuario');
           console.error(err);
           this.submitting.set(false);
         },

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { ModalService } from '../../../shared/modal/modal.service';
 import { CarritoService } from '../../../../service/carrito';
 import { ArticuloService } from '../../../../service/articulo';
@@ -28,7 +28,7 @@ export class CarritoAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oCarritoService = inject(CarritoService);
   private oArticuloService = inject(ArticuloService);
   private oUsuarioService = inject(UsuarioService);
@@ -110,7 +110,7 @@ export class CarritoAdminForm implements OnInit {
       if (articulo?.id != null) {
         this.carritoForm.patchValue({ id_articulo: articulo.id });
         this.selectedArticulo.set(articulo);
-        this.snackBar.open(`Artículo seleccionado: ${articulo.descripcion}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Artículo seleccionado: ${articulo.descripcion}`);
       }
     });
   }
@@ -121,14 +121,14 @@ export class CarritoAdminForm implements OnInit {
       if (usuario?.id != null) {
         this.carritoForm.patchValue({ id_usuario: usuario.id });
         this.selectedUsuario.set(usuario);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`);
       }
     });
   }
 
   onSubmit(): void {
     if (this.carritoForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.info('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -144,13 +144,13 @@ export class CarritoAdminForm implements OnInit {
       carritoData.id = this.carrito.id;
       this.oCarritoService.update(carritoData).subscribe({
         next: () => {
-          this.snackBar.open('Carrito actualizado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Carrito actualizado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando el carrito');
-          this.snackBar.open('Error actualizando el carrito', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error actualizando el carrito');
           console.error(err);
           this.submitting.set(false);
         },
@@ -158,13 +158,13 @@ export class CarritoAdminForm implements OnInit {
     } else {
       this.oCarritoService.create(carritoData).subscribe({
         next: () => {
-          this.snackBar.open('Carrito creado exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.info('Carrito creado exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando el carrito');
-          this.snackBar.open('Error creando el carrito', 'Cerrar', { duration: 4000 });
+          this.notificacion.error('Error creando el carrito');
           console.error(err);
           this.submitting.set(false);
         },

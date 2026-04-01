@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, inject, signal, effect 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { FacturaService } from '../../../../service/factura-service';
 import { UsuarioService } from '../../../../service/usuarioService';
@@ -25,7 +25,7 @@ export class FacturaAdminForm implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
   private oFacturaService = inject(FacturaService);
   private oUsuarioService = inject(UsuarioService);
   private modalService = inject(ModalService);
@@ -85,7 +85,7 @@ export class FacturaAdminForm implements OnInit {
       if (usuario?.id != null) {
         this.facturaForm.patchValue({ id_usuario: usuario.id });
         this.selectedUsuario.set(usuario);
-        this.snackBar.open(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`, 'Cerrar', { duration: 3000 });
+        this.notificacion.success(`Usuario seleccionado: ${usuario.nombre} ${usuario.apellido1}`);
       }
     });
   }
@@ -100,7 +100,7 @@ export class FacturaAdminForm implements OnInit {
 
   onSubmit(): void {
     if (this.facturaForm.invalid) {
-      this.snackBar.open('Por favor, complete todos los campos correctamente', 'Cerrar', { duration: 4000 });
+      this.notificacion.success('Por favor, complete todos los campos correctamente');
       return;
     }
 
@@ -115,13 +115,13 @@ export class FacturaAdminForm implements OnInit {
       facturaData.id = this.factura.id;
       this.oFacturaService.update(facturaData).subscribe({
         next: () => {
-          this.snackBar.open('Factura actualizada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Factura actualizada exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando la factura');
-          this.snackBar.open('Error actualizando la factura', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error actualizando la factura');
           console.error(err);
           this.submitting.set(false);
         },
@@ -129,13 +129,13 @@ export class FacturaAdminForm implements OnInit {
     } else {
       this.oFacturaService.create(facturaData).subscribe({
         next: () => {
-          this.snackBar.open('Factura creada exitosamente', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Factura creada exitosamente');
           this.submitting.set(false);
           this.formSuccess.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando la factura');
-          this.snackBar.open('Error creando la factura', 'Cerrar', { duration: 4000 });
+          this.notificacion.success('Error creando la factura');
           console.error(err);
           this.submitting.set(false);
         },

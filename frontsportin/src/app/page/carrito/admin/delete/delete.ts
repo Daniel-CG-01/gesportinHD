@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CarritoService } from '../../../../service/carrito';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificacionService } from '../../../../service/notificacion';;
 import { CarritoAdminDetail } from '../../../../component/carrito/admin/detail/detail';
 
 @Component({
@@ -13,7 +13,7 @@ import { CarritoAdminDetail } from '../../../../component/carrito/admin/detail/d
 export class CarritoAdminDeletePage {
   private route = inject(ActivatedRoute);
   private carritoService = inject(CarritoService);
-  private snackBar = inject(MatSnackBar);
+  private notificacion = inject(NotificacionService);
 
   id_carrito = signal<number>(0);
   error = signal<string | null>(null);
@@ -31,12 +31,12 @@ export class CarritoAdminDeletePage {
   doDelete(): void {
     this.carritoService.delete(this.id_carrito()).subscribe({
       next: () => {
-        this.snackBar.open('Carrito eliminado', 'Cerrar', { duration: 4000 });
+        this.notificacion.info('Carrito eliminado');
         window.history.back();
       },
       error: (err) => {
         this.error.set('Error eliminando el carrito');
-        this.snackBar.open('Error eliminando el carrito', 'Cerrar', { duration: 4000 });
+        this.notificacion.error('Error eliminando el carrito');
         console.error(err);
       },
     });
