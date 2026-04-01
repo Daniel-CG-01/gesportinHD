@@ -4,10 +4,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TipoarticuloService } from '../../../../service/tipoarticulo';
 import { NotificacionService } from '../../../../service/notificacion';;
 import { TipoarticuloTeamadminDetail } from '../../../../component/tipoarticulo/teamadmin/detail/detail';
+import { ConfirmacionBorradoComponent } from '../../../../component/shared/confirmacion-borrado/confirmacion-borrado.component';
 
 @Component({
   selector: 'app-tipoarticulo-teamadmin-delete-page',
-  imports: [TipoarticuloTeamadminDetail],
+  imports: [TipoarticuloTeamadminDetail, ConfirmacionBorradoComponent],
   templateUrl: './delete.html',
 })
 export class TipoarticuloTeamadminDeletePage implements OnInit {

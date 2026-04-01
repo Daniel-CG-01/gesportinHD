@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, effect, input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/breadcrumb/
 @Component({
   selector: 'app-tipoarticulo-teamadmin-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BreadcrumbComponent],
+  imports: [CommonModule, ReactiveFormsModule, BreadcrumbComponent, RouterLink],
   templateUrl: './form.html',
   styleUrl: './form.css',
 })

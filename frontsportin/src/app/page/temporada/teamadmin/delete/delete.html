@@ -1,15 +1,19 @@
-@if (error()) {
-<div class="alert alert-danger m-3">{{ error() }}</div>
-}
+<div class="container-fluid">
+  <div class="d-flex justify-content-center my-3">
+    <h1 class="mb-0"><i class="bi bi-calendar-event me-2" aria-hidden="true"></i>Eliminar temporada</h1>
+  </div>
 
-@if (!error()) {
-<div class="container p-4">
+  @if (error()) {
+  <div class="alert alert-danger m-3">{{ error() }}</div>
+  }
 
-  <app-temporada-teamadmin-detail [id]="id_temporada"></app-temporada-teamadmin-detail>
+  @if (!error()) {
+  <div class="container p-4">
 
-  <app-confirmacion-borrado
-    (confirm)="doDelete()"
-    (cancel)="doCancel()"
-  ></app-confirmacion-borrado>
+    <app-temporada-teamadmin-detail [id]="id_temporada"></app-temporada-teamadmin-detail>
+
+    <app-confirmacion-borrado (confirm)="doDelete()" (cancel)="doCancel()"></app-confirmacion-borrado>
+  </div>
+  }
+
 </div>
-}
