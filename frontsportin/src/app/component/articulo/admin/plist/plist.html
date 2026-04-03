@@ -151,8 +151,8 @@
                           @if (isDialogMode()) {
                             {{ oArticulo.tipoarticulo.descripcion || 'N/A' }}
                           } @else {
-                            <a [routerLink]="['/tipoarticulo/view', oArticulo.tipoarticulo.id]">{{ oArticulo.tipoarticulo.descripcion || 'N/A' }}</a>
-                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="[session.isClubAdmin() ? '/articulo/teamadmin/tipoarticulo' : '/articulo/tipoarticulo', oArticulo.tipoarticulo.id]" role="button" title="Filtrar por tipo artículo"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                            <a [routerLink]="strRole ? ['/tipoarticulo', strRole, 'view', oArticulo.tipoarticulo.id] : ['/tipoarticulo/view', oArticulo.tipoarticulo.id]">{{ oArticulo.tipoarticulo.descripcion || 'N/A' }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/articulo', strRole, 'tipoarticulo', oArticulo.tipoarticulo.id] : ['/articulo/tipoarticulo', oArticulo.tipoarticulo.id]" role="button" title="Filtrar por tipo artículo"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
                         <td class="text-center d-none d-md-table-cell">
@@ -162,7 +162,7 @@
                             @if (!oArticulo.comentarioarts || oArticulo.comentarioarts === 0) {
                               <i class="bi bi-ban" aria-hidden="true"></i>
                             } @else {
-                              <a [routerLink]="['/comentarioart/articulo', oArticulo.id]">{{ oArticulo.comentarioarts }}</a>
+                              <a [routerLink]="strRole ? ['/comentarioart', strRole, 'articulo', oArticulo.id] : ['/comentarioart/articulo', oArticulo.id]">{{ oArticulo.comentarioarts }}</a>
                             }
                           }
                         </td>
@@ -173,7 +173,7 @@
                             @if (!oArticulo.compras || oArticulo.compras === 0) {
                               <i class="bi bi-ban" aria-hidden="true"></i>
                             } @else {
-                              <a [routerLink]="['/compra/articulo', oArticulo.id]">{{ oArticulo.compras }}</a>
+                              <a [routerLink]="strRole ? ['/compra', strRole, 'articulo', oArticulo.id] : ['/compra/articulo', oArticulo.id]">{{ oArticulo.compras }}</a>
                             }
                           }
                         </td>
@@ -184,7 +184,7 @@
                             @if (!oArticulo.carritos || oArticulo.carritos === 0) {
                               <i class="bi bi-ban" aria-hidden="true"></i>
                             } @else {
-                              <a [routerLink]="['/carrito/articulo', oArticulo.id]">{{ oArticulo.carritos }}</a>
+                              <a [routerLink]="strRole ? ['/carrito', strRole, 'articulo', oArticulo.id] : ['/carrito/articulo', oArticulo.id]">{{ oArticulo.carritos }}</a>
                             }
                           }
                         </td>
@@ -196,7 +196,7 @@
                               </button>
                             </div>
                           } @else {
-                            <app-botonera-actions-plist [id]="oArticulo.id" strEntity="articulo"></app-botonera-actions-plist>
+                            <app-botonera-actions-plist [id]="oArticulo.id" strEntity="articulo" [strRole]="strRole"></app-botonera-actions-plist>
                           }
                         </td>
                       </tr>
