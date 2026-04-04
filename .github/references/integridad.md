@@ -88,7 +88,7 @@ Las entidades deben crearse en este orden para respetar las FK:
 | `id_equipo` | El equipo define el club al que pertenece el jugador. |
 | `id_usuario` | Debe ser un `usuario` con `id_club` igual al club del equipo (`jugador.equipo.categoria.temporada.id_club`). |
 | `id_usuario` | El usuario asignado debe tener `id_tipousuario = 3` (Usuario). |
-| `id_usuario` único por equipo | Un mismo usuario no debería ser jugador dos veces en el mismo equipo (dorsal duplicado dentro del equipo). |
+| `id_usuario` único por equipo | **Un usuario no puede estar asignado a dos jugadores (~dorsal) distintos del MISMO equipo.** La combinación `(id_usuario, id_equipo)` es implícitamente única. Un usuario puede ser jugador en múltiples equipos diferentes, pero solo una vez por equipo. |
 
 ---
 
@@ -235,3 +235,4 @@ Las entidades deben crearse en este orden para respetar las FK:
 | `puntuacion` | Par `(id_noticia, id_usuario)` único |
 | `pago` | Par `(id_cuota, id_jugador)` único |
 | `jugador` | `dorsal` único dentro del mismo `id_equipo` |
+| `jugador` | Par `(id_usuario, id_equipo)` único — Un usuario no puede ser jugador en dos registros distintos del mismo equipo |

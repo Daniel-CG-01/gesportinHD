@@ -16,7 +16,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 @Component({
   standalone: true,
   selector: 'app-pago-admin-plist',
-  imports: [RouterLink, BotoneraRpp, Paginacion, BotoneraActionsPlist],
+  imports: [RouterLink, Paginacion, BotoneraActionsPlist],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })

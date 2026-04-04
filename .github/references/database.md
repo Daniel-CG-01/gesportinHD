@@ -146,6 +146,10 @@ Jugador perteneciente a un equipo, asociado a un usuario del sistema.
 | `id_usuario` | bigint | NO | — | FK → usuario |
 | `id_equipo` | bigint | NO | — | FK → equipo |
 
+**Restricciones de integridad:**
+- `(id_usuario, id_equipo)` debe ser único: un usuario no puede ser jugador en dos registros distintos del mismo equipo.
+- `id_usuario` debe pertenecer al mismo club que el equipo: `usuario.id_club == equipo.categoria.temporada.id_club`.
+
 ---
 
 ### `liga`

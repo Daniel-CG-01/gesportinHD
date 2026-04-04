@@ -18,7 +18,7 @@ import { SessionService } from '../../../../service/session';
   selector: 'app-comentario-admin-plist',
   templateUrl: './plist.html',
   styleUrl: './plist.css',
-  imports: [Paginacion, BotoneraRpp, RouterLink, TrimPipe, BotoneraActionsPlist]
+  imports: [Paginacion, RouterLink, TrimPipe, BotoneraActionsPlist],
 })
 export class ComentarioAdminPlist implements OnDestroy {
   session: SessionService = inject(SessionService);
