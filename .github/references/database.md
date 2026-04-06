@@ -164,6 +164,26 @@ Liga en la que participa un equipo.
 
 ---
 
+### `estadopartido`
+
+Estado de un partido (No jugado, Ganado, Perdido, Empatado, Aplazado).
+
+| Campo | Tipo | Nulo | Default | Notas |
+|---|---|---|---|---|
+| `id` | bigint | NO | AUTO_INCREMENT | PK |
+| `descripcion` | varchar(255) | NO | — | Ej: "Ganado", "Perdido" |
+
+**Datos iniciales (seed):**
+| id | descripcion |
+|---|---|
+| 1 | No jugado |
+| 2 | Aplazado |
+| 3 | Ganado |
+| 4 | Perdido |
+| 5 | Empatado |
+
+---
+
 ### `partido`
 
 Partido disputado en una liga.
@@ -174,7 +194,10 @@ Partido disputado en una liga.
 | `rival` | varchar(255) | NO | — | Nombre del equipo rival |
 | `id_liga` | bigint | NO | — | FK → liga |
 | `local` | tinyint(1) | NO | — | 0=Visitante, 1=Local |
-| `resultado` | varchar(255) | NO | — | Ej: "3-1" |
+| `resultado` | varchar(255) | NO | — | Ej: "3-1"; vacío si aún no jugado |
+| `fecha` | datetime | SÍ | NULL | Fecha/hora del partido |
+| `lugar` | varchar(255) | NO | — | Lugar donde se juega |
+| `id_estadopartido` | bigint | SÍ | NULL | FK → estadopartido |
 
 ---
 

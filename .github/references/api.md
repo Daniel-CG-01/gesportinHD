@@ -473,7 +473,50 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 
 ---
 
-## 11. Partido
+## 11. Estadopartido
+
+**Base:** `/estadopartido`
+
+No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura + fill/empty para datos del sistema.
+
+**Modelo JSON:**
+```json
+{
+  "id": 1,
+  "descripcion": "Ganado",
+  "partidos": 5
+}
+```
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| `id` | Long | PK |
+| `descripcion` | String | Estados fijos del sistema (no generar) |
+| `partidos` | int | Contador |
+
+**Endpoints:**
+
+| Método | Path | Parámetros opcionales | Respuesta |
+|---|---|---|---|
+| GET | `/{id}` | — | EstadopartidoEntity |
+| GET | `/` | — | `List<EstadopartidoEntity>` (lista completa, sin paginación) |
+| GET | `/fill` | — | Long (cantidad creada; fijos del sistema) |
+| DELETE | `/empty` | — | Long (cantidad eliminada) |
+| GET | `/count` | — | Long |
+
+**Datos fijos:**
+
+| id | descripcion |
+|---|---|
+| 1 | No jugado |
+| 2 | Aplazado |
+| 3 | Ganado |
+| 4 | Perdido |
+| 5 | Empatado |
+
+---
+
+## 12. Partido
 
 **Base:** `/partido`
 
@@ -484,7 +527,10 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
   "rival": "Club Rival FC",
   "liga": { "id": 1, ... },
   "local": true,
-  "resultado": "3-1"
+  "resultado": "3-1",
+  "fecha": "2025-10-15T18:00:00",
+  "lugar": "Estadio Municipal",
+  "estadopartido": { "id": 3, "descripcion": "Ganado" }
 }
 ```
 
@@ -494,7 +540,10 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 | `rival` | String | Nombre del equipo rival |
 | `liga` | Object | FK expandida |
 | `local` | Boolean | `true`=local, `false`=visitante |
-| `resultado` | String | Ej: "3-1" |
+| `resultado` | String | Ej: "3-1"; vacío si aún no jugado |
+| `fecha` | String | ISO datetime; puede ser null |
+| `lugar` | String | Lugar/estadio |
+| `estadopartido` | Object | FK expandida; puede ser null |
 
 **Endpoints:**
 
