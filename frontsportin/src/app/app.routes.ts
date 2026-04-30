@@ -195,6 +195,7 @@ import { FacturaTeamadminEditPage } from './page/factura/teamadmin/edit/edit';
 import { AdminGuard } from './guards/admin.guard';
 import { ClubAdminGuard } from './guards/club-admin.guard';
 import { UsuarioGuard } from './guards/usuario.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { MiHomePage } from './page/usuario/mi-home/mi-home';
 import { NoticiaUsuarioPlistPage } from './page/noticia/usuario/plist/plist';
 import { NoticiaUsuarioViewPage } from './page/noticia/usuario/view/view';
@@ -205,6 +206,7 @@ import { CarritoUsuarioTiendaPage } from './page/carrito/usuario/tienda/tienda';
 import { FacturaUsuarioPlistPage } from './page/factura/usuario/plist/plist';
 import { JugadorUsuarioEquipoPlistPage } from './page/jugador/usuario/equipo-plist/plist';
 import { AdminDataToolsPage } from './page/admin/data-tools/data-tools';
+import { UsuarioPerfilPage } from './page/usuario/perfil/perfil';
 
 export const publicRoutes: Routes = [
   { path: '', component: LandingPage },
@@ -504,6 +506,8 @@ export const routes: Routes = [
   { path: 'factura/teamadmin/view/:id', component: FacturaTeamadminViewPage, canActivate: [ClubAdminGuard] },
   { path: 'factura/teamadmin/new', component: FacturaTeamadminNewPage, canActivate: [ClubAdminGuard] },
   { path: 'factura/teamadmin/edit/:id', component: FacturaTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  // Perfil propio (todos los usuarios autenticados)
+  { path: 'mi/perfil', component: UsuarioPerfilPage, canActivate: [AuthGuard] },
   // Usuario (perfil 3) routes
   { path: 'mi', component: MiHomePage, canActivate: [UsuarioGuard] },
   { path: 'mi/noticias', component: NoticiaUsuarioPlistPage, canActivate: [UsuarioGuard] },
