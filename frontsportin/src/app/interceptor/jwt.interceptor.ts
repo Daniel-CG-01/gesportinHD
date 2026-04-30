@@ -48,6 +48,15 @@ export class JWTInterceptor implements HttpInterceptor {
                         });
                     }
                 }
+                // 403 → authenticated but not allowed (different club, etc.), do NOT log out
+                if (err.status === 403) {
+                    this.oNotificacionService.warning(
+                        'No tienes permiso para acceder a este recurso.',
+                        'Acceso denegado',
+                        { autoCierre: 4000 }
+                    );
+                    this.oRouter.navigate(['/']);
+                }
                 return throwError(() => err);
             })
         );

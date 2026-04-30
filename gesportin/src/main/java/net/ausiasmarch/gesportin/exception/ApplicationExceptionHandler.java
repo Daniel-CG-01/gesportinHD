@@ -25,8 +25,8 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ExceptionBean> handleUnauthorizedException(UnauthorizedException ex) {        
-        ExceptionBean oExceptionBean = new ExceptionBean(401, ex.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(oExceptionBean, HttpStatus.UNAUTHORIZED);
+        ExceptionBean oExceptionBean = new ExceptionBean(403, ex.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(oExceptionBean, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(ResourceNotModifiedException.class)
