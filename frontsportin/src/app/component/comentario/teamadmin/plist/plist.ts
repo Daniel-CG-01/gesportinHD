@@ -11,13 +11,14 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { debounceTimeSearch } from '../../../../environment/environment';
 import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/botonera-actions-plist';
+import { NoticiaTeamadminEmbedded } from '../../../noticia/teamadmin/embedded/embedded';
 
 @Component({
   standalone: true,
   selector: 'app-comentario-teamadmin-plist',
   templateUrl: './plist.html',
   styleUrl: './plist.css',
-  imports: [Paginacion, RouterLink, TrimPipe, BotoneraRpp, BotoneraActionsPlist],
+  imports: [Paginacion, RouterLink, TrimPipe, BotoneraRpp, BotoneraActionsPlist, NoticiaTeamadminEmbedded],
 })
 export class ComentarioTeamadminPlist implements OnInit, OnDestroy {
   readonly strRole = 'teamadmin';
